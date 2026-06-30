@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ORBIT — 제공자 확인·수정</title>
+<style>
+  :root{
+    --navy:#0b1226; --blue:#2563eb; --blue2:#3b82f6; --sky:#eff6ff;
+    --bg:#f8fafc; --card:#ffffff; --text:#101828; --muted:#667085;
+    --line:#e5e7eb; --green:#10b981; --mint:#d1fae5;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR","Segoe UI",sans-serif;
+    color:var(--text); background:var(--bg); word-break:keep-all;}
+  .topbar{position:sticky; top:0; z-index:50; background:rgba(255,255,255,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); padding:12px 0;}
+  .topbar .in{width:min(860px,92%); margin:0 auto; display:flex; align-items:center; gap:10px;}
+  .mark{display:inline-flex; align-items:center; gap:9px; font-weight:900; letter-spacing:.16em; color:var(--navy); font-size:15px;}
+  .logo{width:22px; height:22px; border:5px solid var(--navy); border-radius:50%; position:relative;}
+  .logo::after{content:""; position:absolute; width:30px; height:3px; background:var(--blue); border-radius:999px; transform:rotate(-15deg); top:8px; left:-8px;}
+  .topbar .tag{margin-left:auto; font-size:12px; color:var(--muted);}
+  .wrap{width:min(860px,92%); margin:0 auto; padding-bottom:50px;}
+
+  /* 히어로 */
+  .hero{background:linear-gradient(150deg,#0b1226 0%,#16225a 60%,#1e3a8a 100%); color:#fff; border-radius:0 0 28px 28px; padding:34px 32px 30px; margin-bottom:22px;}
+  .hero .tags{display:flex; gap:7px; flex-wrap:wrap; margin-bottom:14px;}
+  .hero .tags span{font-size:11.5px; font-weight:700; padding:4px 11px; border-radius:999px; background:rgba(255,255,255,.14); color:#dbeafe;}
+  .hero .tags span.hot{background:#fbbf24; color:#3b1d00;}
+  .hero h1{font-size:28px; letter-spacing:-.04em; margin:0 0 8px; line-height:1.3;}
+  .hero .lead{font-size:14.5px; color:#c7d2fe; line-height:1.65; margin:0 0 18px; max-width:560px;}
+  .hero .meta{display:flex; gap:20px; flex-wrap:wrap; font-size:12.5px; color:#a5b4fc;}
+  .hero .meta b{color:#fff; font-weight:800;}
+
+  .card{background:var(--card); border:1px solid var(--line); border-radius:20px; padding:24px 26px; margin-bottom:18px; box-shadow:0 10px 30px rgba(15,23,42,.04);}
+  .eyebrow{font-size:12px; font-weight:800; color:var(--blue); letter-spacing:.03em; margin:0 0 12px; display:flex; align-items:center; gap:7px;}
+  h2.sec{font-size:19px; letter-spacing:-.03em; color:var(--navy); margin:0 0 12px;}
+
+  /* 스토리 */
+  .story p{font-size:14.5px; line-height:1.85; color:#334155; margin:0 0 14px;}
+  .story p:last-child{margin-bottom:0;}
+  .story .quote{border-left:3px solid var(--blue); background:var(--sky); border-radius:0 12px 12px 0; padding:14px 18px; font-size:15px; font-weight:600; color:var(--navy); line-height:1.6; margin:4px 0 16px;}
+  .story .hl{background:linear-gradient(transparent 62%, #d1fae5 62%); font-weight:700; color:var(--navy);}
+
+  /* 왜 지금 */
+  .why-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+  .why{background:var(--bg); border:1px solid var(--line); border-radius:14px; padding:16px 14px;}
+  .why .ic{font-size:22px; margin-bottom:8px;}
+  .why .t{font-size:13.5px; font-weight:800; color:var(--navy); margin-bottom:4px;}
+  .why .d{font-size:12px; color:var(--muted); line-height:1.5;}
+  @media(max-width:680px){ .why-grid{grid-template-columns:1fr;} }
+
+  /* 미니목업 */
+  .mock{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:6px;}
+  .mm{border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#fff;}
+  .mm-cap{font-size:10px; font-weight:800; color:var(--blue); text-align:center; padding:7px 0 2px;}
+  .mm-body{padding:8px;}
+  .mg{width:46px; height:46px; border-radius:50%; margin:3px auto; background:radial-gradient(circle at 38% 32%, #fff 0 12%, #c7f9cc 13% 48%, #86efac 49% 70%, #4ade80 71% 100%); box-shadow:inset 0 0 0 4px rgba(255,255,255,.6);}
+  .mg.sm{width:30px;height:30px;}
+  .mm1{background:linear-gradient(160deg,#eefdf7,#eef4ff); border-radius:9px; padding:10px 6px; text-align:center;}
+  .mm1 .nm{font-size:10px; font-weight:800; color:var(--navy); margin-top:4px;}
+  .mm1 .pr{font-size:10px; font-weight:900; color:var(--navy);}
+  .mm-grid{display:grid; grid-template-columns:1fr 1fr; gap:5px;}
+  .mm-cell{border:1px solid var(--line); border-radius:7px; padding:5px; text-align:center;}
+  .mm-cell .thumb{height:22px; background:linear-gradient(135deg,#d1fae5,#dbeafe); border-radius:5px; display:flex; align-items:center; justify-content:center; margin-bottom:3px;}
+  .mm-cell .thumb .mg{width:16px;height:16px;margin:0;}
+  .mm-cell .cn{font-size:8px; font-weight:700; color:var(--navy);}
+  .mm-sns-top{display:flex; align-items:center; gap:5px; margin-bottom:5px;}
+  .mm-sns-av{width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 38% 32%, #fff 0 14%, #4ade80 61% 100%);}
+  .mm-sns-nm{font-size:9px; font-weight:800; color:var(--navy);}
+  .mm-sns-img{height:48px; border-radius:7px; background:linear-gradient(135deg,#d1fae5,#dbeafe); display:flex; align-items:center; justify-content:center; margin-bottom:4px;}
+  .mm-sns-cap{font-size:8.5px; color:#334155;}
+
+  /* 내 자리 */
+  .myrole{border:2px solid var(--blue); background:var(--sky); border-radius:16px; padding:18px 20px; margin-bottom:12px;}
+  .myrole .top{display:flex; align-items:center; gap:10px; margin-bottom:10px;}
+  .myrole .mk{width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;flex:0 0 auto;}
+  .myrole .rt{font-size:15px; font-weight:800; color:var(--navy);}
+  .myrole .rtag{margin-left:auto; font-size:11px; font-weight:800; background:var(--blue); color:#fff; padding:3px 11px; border-radius:999px;}
+  .myrole ul{margin:0; padding-left:18px; font-size:13px; color:#334155; line-height:1.75;}
+  .role{display:flex; align-items:center; gap:9px; padding:9px 13px; border:1px solid var(--line); border-radius:11px; margin-bottom:7px; font-size:13px; color:#475569;}
+  .role .mk{width:19px;height:19px;border-radius:50%;background:var(--mint);color:#047857;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex:0 0 auto;}
+  .role .t2{margin-left:auto; font-size:10.5px; background:var(--sky); color:var(--blue); padding:2px 9px; border-radius:999px; font-weight:700;}
+
+  /* 궁합 */
+  .fit{display:flex; align-items:center; gap:10px; padding:11px 0; border-bottom:1px solid var(--line);}
+  .fit:last-child{border-bottom:0;}
+  .fit .ic{font-size:17px;}
+  .fit .t{font-size:13.5px; font-weight:700; color:var(--navy);}
+  .fit .d{font-size:11.5px; color:var(--muted);}
+  .fit .pct{margin-left:auto; font-size:13px; font-weight:900; color:var(--green);}
+
+  /* 합류 바 */
+  .joinbar{position:sticky; bottom:0; background:rgba(255,255,255,.95); backdrop-filter:blur(8px); border-top:1px solid var(--line); padding:14px 0; margin-top:8px;}
+  .joinbar .in{width:min(860px,92%); margin:0 auto; display:flex; align-items:center; gap:14px;}
+  .joinbar .txt{font-size:13px; color:var(--muted);}
+  .joinbar .txt b{color:var(--navy);}
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:7px; background:var(--blue); color:#fff; border:none; border-radius:12px; padding:13px 24px; font-size:14.5px; font-weight:800; cursor:pointer; margin-left:auto; flex:0 0 auto;}
+  .btn.ghost{background:#fff; color:var(--navy); border:1px solid var(--line);}
+
+  /* 제공자 확인 모드 */
+  .review-banner{background:linear-gradient(135deg,#eff6ff,#eef2ff); border:1px solid #c7d2fe; border-radius:16px; padding:16px 20px; margin-bottom:18px; display:flex; align-items:center; gap:13px;}
+  .review-banner .ic{font-size:24px;}
+  .review-banner .t{font-size:14px; font-weight:800; color:var(--navy);}
+  .review-banner .d{font-size:12.5px; color:#475569; line-height:1.5; margin-top:2px;}
+  .sec-head{display:flex; align-items:center; gap:8px; margin-bottom:12px;}
+  .sec-head .eyebrow{margin:0;}
+  .sec-ctrl{margin-left:auto; display:flex; gap:6px;}
+  .sec-ctrl button{font-size:11.5px; font-weight:700; padding:5px 11px; border-radius:8px; border:1px solid var(--line); background:#fff; color:#475569; cursor:pointer; display:inline-flex; align-items:center; gap:4px; transition:.15s;}
+  .sec-ctrl button:hover{border-color:var(--blue); color:var(--blue);}
+  .sec-ctrl button.ai:hover{border-color:#8b5cf6; color:#8b5cf6;}
+  .card.editable{position:relative; border-color:#dbeafe;}
+  .card.editable:hover{box-shadow:0 12px 32px rgba(37,99,235,.08);}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="in"><span class="mark"><span class="logo"></span>ORBIT</span><span class="tag">제공자 확인 · 팀원에게 보이기 전</span></div></div>
+
+<div class="hero">
+  <div style="width:min(860px,92%); margin:0 auto;">
+    <div class="tags"><span class="hot">👁 팀원에게 이렇게 보여요 (미리보기)</span><span>친환경·업사이클</span><span>Gen Z 타깃</span></div>
+    <h1>에코그립 — 버려진 뚜껑이<br>손안의 무드가 되기까지</h1>
+    <p class="lead">매년 수만 톤씩 버려지는 페트병 뚜껑. 우리는 그걸 '쓰레기'가 아니라 '소재'로 봅니다. 압출·가공을 거쳐 갖고 싶은 디자인 그립톡으로 — 버린 게 예뻐지는 경험을 Gen Z에게.</p>
+    <div class="meta"><span>👤 제공자 <b>김민지</b> · 친환경 브랜드 기획</span><span>👥 현재 <b>1명</b> 합류 · <b>3자리</b> 모집 중</span><span>📅 <b>3일 전</b> 등록</span></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="review-banner">
+    <span class="ic">✍️</span>
+    <div><div class="t">AI가 만든 비전을 확인하세요</div><div class="d">팀원에게 보이기 전, 항목마다 직접 고치거나 AI에게 다시 맡길 수 있어요. 맘에 들면 그대로 두세요.</div></div>
+  </div>
+
+  <!-- 스토리 (메인) -->
+  <div class="card story editable">
+    <div class="sec-head">
+      <p class="eyebrow">📖 왜 이 사업을 하는가</p>
+      <div class="sec-ctrl"><button onclick="alert('이 스토리를 직접 고칠 수 있어요')">✎ 수정</button><button class="ai" onclick="alert('AI가 스토리를 다시 써드려요')">🔄 AI 다시</button></div>
+    </div>
+    <p>카페를 운영하면서 매일 수백 개의 페트병 뚜껑을 버렸습니다. 분리배출해도 크기가 작아 대부분 소각된다는 걸 알고 나서, 이걸 그냥 버리는 게 계속 마음에 걸렸어요.</p>
+    <div class="quote">"버리는 건 쉬운데, 살리는 건 왜 아무도 안 할까? 그럼 내가 해보자."</div>
+    <p>찾아보니 폐플라스틱을 잘게 갈아 <span class="hl">압출 성형</span>하면 단단한 소품을 만들 수 있더라고요. 그중에서도 <span class="hl">그립톡</span>을 골랐습니다. 작아서 적은 소재로 만들 수 있고, 무엇보다 <span class="hl">Gen Z가 매일 들고 다니며 자랑하는 아이템</span>이니까요.</p>
+    <p>'친환경'을 내세우는 제품은 많지만, 정작 *예쁘지 않아서* 안 사는 경우가 대부분이에요. 우리는 반대로 갑니다 — <b>먼저 갖고 싶게, 알고 보니 친환경.</b> 그게 진짜 지속가능한 소비라고 믿어요.</p>
+    <p style="color:var(--blue); font-weight:700;">이제 이 아이디어를 진짜 제품으로 만들 동료가 필요합니다. 혼자선 못 해요. 함께 만들 사람을 찾습니다.</p>
+  </div>
+
+  <!-- 왜 지금 -->
+  <div class="card">
+    <p class="eyebrow">⏱ 왜 지금, 왜 함께인가</p>
+    <div class="why-grid">
+      <div class="why"><div class="ic">🌍</div><div class="t">시장이 커지는 중</div><div class="d">ESG·가치소비가 Gen Z 핵심 트렌드. 친환경 굿즈 수요 급성장.</div></div>
+      <div class="why"><div class="ic">🧩</div><div class="t">조각이 다 맞음</div><div class="d">아이디어·디자인 방향·타깃은 정해졌고, '만들 손'만 있으면 출발.</div></div>
+      <div class="why"><div class="ic">🚀</div><div class="t">초기 멤버 자리</div><div class="d">부품이 아니라 처음부터 함께 만드는 창립 멤버로 합류.</div></div>
+    </div>
+  </div>
+
+  <!-- 어떤 제품 -->
+  <div class="card editable">
+    <div class="sec-head">
+      <p class="eyebrow">🎨 어떤 제품을 만드나</p>
+      <div class="sec-ctrl"><button class="ai" onclick="alert('AI가 예시 이미지를 다시 생성해드려요')">🔄 이미지 다시</button></div>
+    </div>
+    <div class="mock">
+      <div class="mm"><div class="mm-cap">① 제품샷</div><div class="mm-body"><div class="mm1"><div class="mg"></div><div class="nm">에코그립</div><div class="pr">12,000원</div></div></div></div>
+      <div class="mm"><div class="mm-cap">② 스토어</div><div class="mm-body"><div class="mm-grid"><div class="mm-cell"><div class="thumb"><div class="mg"></div></div><div class="cn">민트</div></div><div class="mm-cell"><div class="thumb"><div class="mg"></div></div><div class="cn">오션</div></div><div class="mm-cell"><div class="thumb"><div class="mg"></div></div><div class="cn">선셋</div></div><div class="mm-cell"><div class="thumb"><div class="mg"></div></div><div class="cn">세트</div></div></div></div></div>
+      <div class="mm"><div class="mm-cap">③ SNS</div><div class="mm-body"><div class="mm-sns-top"><div class="mm-sns-av"></div><div class="mm-sns-nm">ecogrip</div></div><div class="mm-sns-img"><div class="mg sm"></div></div><div class="mm-sns-cap">버려진 뚜껑이 ✨ #업사이클</div></div></div>
+    </div>
+    <p style="font-size:11.5px; color:var(--muted); margin:10px 0 0; text-align:center;">✨ AI가 생성한 예시 이미지 — 실제 디자인은 팀과 함께 완성합니다</p>
+  </div>
+
+  <!-- 내 자리 -->
+  <div class="card editable">
+    <div class="sec-head">
+      <p class="eyebrow">🧩 필요한 팀원</p>
+      <div class="sec-ctrl"><button onclick="alert('필요한 팀원을 추가·삭제할 수 있어요')">✎ 팀원 수정</button><button class="ai" onclick="alert('AI가 필요 팀원을 다시 추천해드려요')">🔄 AI 추천</button></div>
+    </div>
+    <div class="myrole">
+      <div class="top"><span class="mk">1</span><span class="rt">압출 기계·생산 시설 지식 보유자</span><span class="rtag">핵심 역할</span></div>
+      <ul>
+        <li>폐뚜껑을 그립톡으로 만드는 <b>압출·성형 공정 설계</b></li>
+        <li>소량 생산부터 시작할 <b>생산 파트너·설비 연결</b></li>
+        <li>'버린 게 예뻐진다'를 실제로 가능하게 하는 <b>핵심 기술 축</b></li>
+      </ul>
+    </div>
+    <p style="font-size:12px; color:var(--muted); margin:0 0 10px;">함께 모집하는 자리</p>
+    <div class="role"><span class="mk">◎</span>카페·공방 형태 사업 경력자<span class="t2">모집</span></div>
+    <div class="role"><span class="mk">◎</span>온라인 판매 지식 보유자<span class="t2">모집</span></div>
+    <div class="role"><span class="mk">◎</span>SNS 마케팅 전문가<span class="t2">모집</span></div>
+  </div>
+
+  <!-- 제공자 질문 -->
+  <div class="card editable">
+    <div class="sec-head">
+      <p class="eyebrow">❓ 팀원에게 물어볼 내 질문</p>
+      <div class="sec-ctrl"><button onclick="alert('제공자 질문을 고칠 수 있어요')">✎ 수정</button></div>
+    </div>
+    <p style="font-size:13px; color:#475569; line-height:1.6; margin:0 0 10px;">합류하려는 팀원은 AI 질문 2개 + 아래 내 질문 1개, 총 3가지에 답하게 됩니다.</p>
+    <div style="border:1px solid var(--blue); background:var(--sky); border-radius:12px; padding:13px 15px; font-size:13.5px; color:var(--navy); line-height:1.6;">"우리 사업에서 '환경'은 양보 못 할 가치예요. 자원 재활용에 어떤 생각을 가지고 계신가요?"</div>
+  </div>
+
+</div>
+
+<div class="joinbar"><div class="in">
+  <div class="txt"><b>이대로 팀원에게 보일까요?</b> · 수정은 위에서 항목별로</div>
+  <button class="btn ghost" style="margin-left:auto; flex:0 0 auto;">🔄 전체 다시 생성</button>
+  <button class="btn" style="margin-left:0;">확정하고 팀원 찾기 →</button>
+</div></div>
+
+</body>
+</html>

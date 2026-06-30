@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ORBIT — 전체 흐름 프로토타입</title>
+<style>
+  :root{
+    --navy:#0b1226; --blue:#2563eb; --blue2:#3b82f6; --sky:#eff6ff;
+    --bg:#f8fafc; --card:#ffffff; --text:#101828; --muted:#667085;
+    --line:#e5e7eb; --green:#10b981; --mint:#d1fae5;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR","Segoe UI",sans-serif;
+    color:var(--text); background:var(--bg); word-break:keep-all;}
+
+  /* 상단 고정 헤더 */
+  .topbar{position:sticky; top:0; z-index:50; background:rgba(255,255,255,.9); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); padding:13px 0;}
+  .topbar .in{width:min(1080px,92%); margin:0 auto; display:flex; align-items:center; gap:10px;}
+  .mark{display:inline-flex; align-items:center; gap:9px; font-weight:900; letter-spacing:.16em; color:var(--navy); font-size:16px;}
+  .logo{width:23px; height:23px; border:5px solid var(--navy); border-radius:50%; position:relative;}
+  .logo::after{content:""; position:absolute; width:31px; height:3px; background:var(--blue); border-radius:999px; transform:rotate(-15deg); top:9px; left:-8px;}
+  .topbar .tag{margin-left:auto; font-size:12px; color:var(--muted);}
+
+  .wrap{width:min(1080px,92%); margin:0 auto;}
+
+  /* 단계 라벨 */
+  .step{margin:54px 0 18px; display:flex; align-items:center; gap:13px;}
+  .step .no{width:38px; height:38px; flex:0 0 auto; border-radius:50%; background:var(--blue); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:17px; box-shadow:0 6px 16px rgba(37,99,235,.3);}
+  .step .tx h2{margin:0; font-size:21px; letter-spacing:-.03em; color:var(--navy);}
+  .step .tx p{margin:2px 0 0; font-size:13.5px; color:var(--muted);}
+  .lane{display:inline-block; font-size:11px; font-weight:800; padding:3px 11px; border-radius:999px; margin-left:auto;}
+  .lane.idea{background:var(--sky); color:var(--blue);}
+  .lane.team{background:var(--mint); color:#047857;}
+
+  .card{background:var(--card); border:1px solid var(--line); border-radius:22px; box-shadow:0 16px 40px rgba(15,23,42,.05); overflow:hidden;}
+  .ct{padding:12px 18px; border-bottom:1px solid var(--line); display:flex; gap:7px; align-items:center;}
+  .dot{width:9px; height:9px; border-radius:50%; background:#e2e6ee;}
+  .ce{margin-left:5px; font-size:11.5px; font-weight:800; color:var(--blue); letter-spacing:.02em;}
+  .cb{padding:22px;}
+
+  h3.q{font-size:19px; letter-spacing:-.03em; color:var(--navy); margin:0 0 6px;}
+  .sub{color:var(--muted); font-size:13px; line-height:1.6; margin:0 0 15px;}
+  .lbl{font-size:11.5px; color:var(--muted); font-weight:700; margin-bottom:8px;}
+  .divider{height:1px; background:var(--line); margin:15px 0;}
+
+  .input{background:var(--sky); border:1px solid #dbeafe; border-radius:13px; padding:13px 15px; min-height:62px; color:#334155; font-size:13.5px; line-height:1.6;}
+  .input.ph{color:#94a3b8;}
+  .meta{display:flex; justify-content:space-between; align-items:center; margin-top:7px; font-size:11.5px; color:var(--muted);}
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:7px; background:var(--blue); color:#fff; border:none; border-radius:11px; padding:11px 16px; font-size:13.5px; font-weight:800; width:100%; margin-top:13px; cursor:pointer;}
+  .btn.ghost{background:#fff; color:var(--navy); border:1px solid var(--line);}
+  .btn-row{display:flex; gap:9px;}
+
+  .qa{display:flex; align-items:center; gap:9px; border:1px solid var(--line); border-radius:11px; padding:11px 13px; margin-bottom:8px; font-size:13.5px; color:#334155;}
+  .qa .rd{width:15px; height:15px; border-radius:50%; border:2px solid #cbd5e1; flex:0 0 auto;}
+  .qa.sel{border-color:var(--blue); background:var(--sky);}
+  .qa.sel .rd{border-color:var(--blue); background:var(--blue); box-shadow:inset 0 0 0 3px #fff;}
+  .qbadge{display:inline-block; font-size:11px; font-weight:800; color:var(--blue); background:var(--sky); padding:3px 10px; border-radius:999px; margin-bottom:8px;}
+
+  /* 미니 목업 */
+  .mock{display:grid; grid-template-columns:repeat(3,1fr); gap:8px;}
+  .mm{border:1px solid var(--line); border-radius:11px; overflow:hidden; background:#fff;}
+  .mm-cap{font-size:9.5px; font-weight:800; color:var(--blue); text-align:center; padding:6px 0 2px;}
+  .mm-body{padding:7px;}
+  .mg{width:40px; height:40px; border-radius:50%; margin:2px auto; background:radial-gradient(circle at 38% 32%, #fff 0 12%, #c7f9cc 13% 48%, #86efac 49% 70%, #4ade80 71% 100%); box-shadow:inset 0 0 0 3px rgba(255,255,255,.6);}
+  .mg.sm{width:24px;height:24px;}
+  .mm1{background:linear-gradient(160deg,#eefdf7,#eef4ff); border-radius:8px; padding:8px 5px; text-align:center;}
+  .mm1 .nm{font-size:9.5px; font-weight:800; color:var(--navy); margin-top:3px;}
+  .mm1 .pr{font-size:9.5px; font-weight:900; color:var(--navy);}
+  .mm-grid{display:grid; grid-template-columns:1fr 1fr; gap:4px;}
+  .mm-cell{border:1px solid var(--line); border-radius:6px; padding:4px; text-align:center;}
+  .mm-cell .thumb{height:20px; background:linear-gradient(135deg,#d1fae5,#dbeafe); border-radius:4px; display:flex; align-items:center; justify-content:center; margin-bottom:2px;}
+  .mm-cell .thumb .mg{width:14px;height:14px;margin:0;}
+  .mm-cell .cn{font-size:7.5px; font-weight:700; color:var(--navy);}
+  .mm-sns-top{display:flex; align-items:center; gap:4px; margin-bottom:4px;}
+  .mm-sns-av{width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 38% 32%, #fff 0 14%, #4ade80 61% 100%);}
+  .mm-sns-nm{font-size:8px; font-weight:800; color:var(--navy);}
+  .mm-sns-img{height:40px; border-radius:6px; background:linear-gradient(135deg,#d1fae5,#dbeafe); display:flex; align-items:center; justify-content:center; margin-bottom:3px;}
+  .mm-sns-cap{font-size:7.5px; color:#334155;}
+
+  .badge0{display:inline-block; font-size:11px; background:#fef3c7; color:#92400e; padding:3px 11px; border-radius:999px; margin-bottom:9px; font-weight:700;}
+  .name{font-size:17px; font-weight:800; color:var(--navy); margin-bottom:2px;}
+  .tagline{color:var(--muted); font-size:12.5px; margin-bottom:14px;}
+  .role{display:flex; align-items:center; gap:9px; padding:9px 12px; border:1px solid var(--line); border-radius:11px; margin-bottom:7px; font-size:13px;}
+  .role .mk{width:19px;height:19px;border-radius:50%;background:var(--mint);color:#047857;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex:0 0 auto;}
+  .role.me{border-color:var(--blue); background:var(--sky);}
+  .role .tag2{margin-left:auto; font-size:10.5px; background:var(--sky); color:var(--blue); padding:2px 9px; border-radius:999px; font-weight:700;}
+  .role.me .tag2{background:var(--blue); color:#fff;}
+  /* 선택 가능한 팀원 행 */
+  .role.pick{cursor:pointer; transition:.15s;}
+  .role.pick .cbx{width:19px; height:19px; border-radius:6px; border:2px solid #cbd5e1; flex:0 0 auto; position:relative; transition:.15s;}
+  .role.pick:hover{border-color:var(--blue2);}
+  .role.pick.on{border-color:var(--blue); background:var(--sky);}
+  .role.pick.on .cbx{background:var(--blue); border-color:var(--blue);}
+  .role.pick.on .cbx::after{content:"✓"; position:absolute; inset:0; color:#fff; font-size:12px; font-weight:900; display:flex; align-items:center; justify-content:center;}
+  #vp-next:disabled{background:#cbd5e1; cursor:not-allowed;}
+  .match-el{display:flex; align-items:center; gap:8px; padding:7px 2px; font-size:12.5px; color:#334155;}
+  .match-el .ck{color:var(--green); font-weight:900;}
+
+  .qcard{border:1px solid var(--line); border-radius:13px; padding:13px; margin-bottom:10px;}
+  .qcard.pr{border-color:var(--blue);}
+  .qtext{font-size:13.5px; font-weight:700; color:var(--navy); margin:0 0 8px;}
+  .qsrc{font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:6px; margin-left:6px;}
+  .qsrc.ai{background:var(--sky); color:var(--blue);}
+  .qsrc.prv{background:#fef3c7; color:#92400e;}
+  .ans{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:12.5px; color:#334155; line-height:1.55;}
+
+  .score{text-align:center; padding:4px 0 2px;}
+  .score .n{font-size:38px; font-weight:900; color:var(--green); line-height:1;}
+  .score .l{font-size:13px; color:var(--green); margin:4px 0 11px; font-weight:700;}
+  .bar{background:var(--bg); border-radius:99px; height:9px; overflow:hidden;}
+  .bar .fill{height:100%; background:var(--green); border-radius:99px;}
+  .reason{display:flex; gap:9px; align-items:flex-start; margin-bottom:9px;}
+  .reason .ic{font-size:14px; flex:0 0 auto; margin-top:1px;}
+  .reason .t{font-size:12.5px; font-weight:700; color:var(--navy);}
+  .reason .d{font-size:11px; color:var(--muted); line-height:1.5;}
+  .guard{display:flex; gap:8px; align-items:flex-start; background:var(--bg); border-radius:10px; padding:11px 13px; margin-top:10px;}
+  .guard .t{font-size:11.5px; color:var(--muted); line-height:1.55;}
+  .slack{display:flex; align-items:center; gap:10px; background:#4A154B; color:#fff; border-radius:12px; padding:13px 16px; margin-top:11px;}
+  .slack .ico{font-size:18px;}
+  .slack .t{font-size:13px; font-weight:700;}
+  .slack .a{margin-left:auto; font-size:12px; opacity:.85;}
+
+  .two{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media(max-width:720px){ .two{grid-template-columns:1fr;} }
+
+  /* 기획서형 */
+  .plan{display:flex; flex-direction:column; gap:2px;}
+  .prow{display:grid; grid-template-columns:104px 1fr; gap:14px; padding:11px 0; border-bottom:1px solid var(--line); align-items:start;}
+  .prow:last-child{border-bottom:0;}
+  .prow .pk{font-size:13px; font-weight:800; color:var(--navy);}
+  .prow .pv{font-size:13px; color:#334155; line-height:1.6;}
+
+  .divider-lane{margin:60px 0 0; text-align:center; position:relative;}
+  .divider-lane::before{content:""; position:absolute; top:50%; left:0; right:0; height:1px; background:var(--line);}
+  .divider-lane span{position:relative; background:var(--bg); padding:0 18px; font-size:13px; font-weight:800; color:var(--navy);}
+
+  .hero{text-align:center; padding:48px 0 8px;}
+  .hero h1{font-size:34px; letter-spacing:-.04em; color:var(--navy); margin:0 0 10px; line-height:1.25;}
+  .hero h1 .bl{color:var(--blue);}
+  .hero p{color:var(--muted); font-size:14.5px; max-width:520px; margin:0 auto;}
+
+  .foot{margin:60px 0 40px; text-align:center; color:var(--muted); font-size:12.5px; line-height:1.8;}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="in"><span class="mark"><span class="logo"></span>ORBIT</span><span class="tag">아이디어를, ORBIT 하다 · 전체 흐름 프로토타입</span></div></div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1>빛나는 아이디어를<br>함께 실현할 <span class="bl">팀원</span>을 찾다</h1>
+    <p>아래로 내리면, 아이디어 한 줄이 팀이 되기까지의 모든 과정이 펼쳐집니다. 👇</p>
+  </div>
+
+  <div class="divider-lane" style="margin-top:34px"><span>🟦 아이디어를 내는 사람</span></div>
+
+  <!-- STEP 1 -->
+  <div class="step">
+    <div class="no">1</div>
+    <div class="tx"><h2>아이디어를 한 줄로 던진다</h2><p>거창할 필요 없어요. 떠오른 걸 한 줄로.</p></div>
+    <span class="lane idea">아이디어 쪽</span>
+  </div>
+  <div class="card">
+    <div class="ct"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="ce">아이디어 입력</span></div>
+    <div class="cb">
+      <h3 class="q">한 줄이면 충분합니다</h3>
+      <div class="input">버려지는 페트병 뚜껑을 모아 핸드폰 그립톡으로 업사이클링하고, 친환경 굿즈로 판매하고 싶어요.</div>
+      <div class="meta"><span>📎 그립톡_레퍼런스.pdf</span><span>62 / 1000</span></div>
+      <button class="btn">ORBIT 구체화 시작 →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step">
+    <div class="no">2</div>
+    <div class="tx"><h2>AI가 2가지를 더 물어본다</h2><p>비전을 또렷하게 만들기 위한 질문이에요.</p></div>
+    <span class="lane idea">아이디어 쪽</span>
+  </div>
+  <div class="two">
+    <div class="card"><div class="ct"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="ce">AI 질문 1/2</span></div>
+      <div class="cb"><span class="qbadge">ORBIT 중…</span><h3 class="q" style="font-size:16px">누가 가장 사고 싶어 할까요?</h3>
+        <div class="qa sel"><span class="rd"></span>환경에 관심 많은 Gen Z 소비자</div>
+        <div class="qa"><span class="rd"></span>친환경 굿즈 찾는 기업·단체</div>
+      </div></div>
+    <div class="card"><div class="ct"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="ce">AI 질문 2/2</span></div>
+      <div class="cb"><span class="qbadge">ORBIT 중…</span><h3 class="q" style="font-size:16px">가장 중요한 강점은요?</h3>
+        <div class="qa sel"><span class="rd"></span>버려진 자원을 살리는 친환경 스토리</div>
+        <div class="qa"><span class="rd"></span>갖고 싶게 만드는 디자인·미감</div>
+      </div></div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step">
+    <div class="no">3</div>
+    <div class="tx"><h2>AI가 '비전 페이지'를 뚝딱 만든다</h2><p>이름·목업·필요한 팀원까지 한 장에.</p></div>
+    <span class="lane idea">아이디어 쪽</span>
+  </div>
+  <div class="card">
+    <div class="ct"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="ce">비전 페이지 (팀원 찾기 전)</span></div>
+    <div class="cb">
+      <div class="two">
+        <div>
+          <div class="name">에코그립 — 버려진 뚜껑이 손안의 무드</div>
+          <div class="tagline">페트병 뚜껑을 업사이클링한 친환경 그립톡, Gen Z를 위한 굿즈</div>
+          <div class="lbl">화면 미리보기 (AI가 그린 예시 이미지)</div>
+          <div class="mock">
+            <div class="mm"><div class="mm-cap">① 제품샷</div><div class="mm-body"><div class="mm1"><div class="mg"></div><div class="nm">에코그립</div><div class="pr">12,000원</div></div></div></div>
+            <div class="mm"><div class="mm-cap">② 스토어</div><div class="mm-body"><div class="mm-grid"><div class="mm-cell"><div class="thumb"><div class="mg"></div></div><div class="cn">민트</div></div><div class="mm-cell"><div class="thumb"><div class="mg"></div></div><div class="cn">오션</div></div><div class="mm-cell"><div class="thumb"><div class="mg"></div></div><div class="cn">선셋</div></div><div class="mm-cell"><div class="thumb"><div class="mg"></div></div><div class="cn">세트</div></div></div></div></div>
+            <div class="mm"><div class="mm-cap">③ SNS</div><div class="mm-body"><div class="mm-sns-top"><div class="mm-sns-av"></div><div class="mm-sns-nm">ecogrip</div></div><div class="mm-sns-img"><div class="mg sm"></div></div><div class="mm-sns-cap">버려진 뚜껑이 ✨ #업사이클</div></div></div>
+          </div>
+        </div>
+        <div>
+          <div class="lbl">이 아이디어에 필요한 팀원 — <b style="color:var(--blue)">함께 찾을 팀원을 선택하세요 (1명 이상 필수)</b></div>
+          <div class="role pick" onclick="togglePick(this)"><span class="cbx"></span>압출 기계·생산 시설 지식<span class="tag2">추천</span></div>
+          <div class="role pick" onclick="togglePick(this)"><span class="cbx"></span>카페·공방 사업 경력자<span class="tag2">추천</span></div>
+          <div class="role pick" onclick="togglePick(this)"><span class="cbx"></span>온라인 판매 지식 보유자<span class="tag2">추천</span></div>
+          <div class="role pick" onclick="togglePick(this)"><span class="cbx"></span>SNS 마케팅 전문가<span class="tag2">추천</span></div>
+          <button id="vp-next" class="btn" disabled onclick="if(!this.disabled)alert('선택한 팀원을 모집합니다! 다음: 제공자 질문 작성')">팀원을 선택하세요 →</button>
+          <div class="divider"></div>
+          <div class="lbl">팀원 매칭 시 중요 요소 (궁합)</div>
+          <div class="match-el"><span class="ck">✓</span>환경보호·자원 재활용 마인드</div>
+          <div class="match-el"><span class="ck">✓</span>미적 감각 보유</div>
+          <div class="match-el"><span class="ck">✓</span>트렌드·Gen Z 타깃 이해도</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3b 기획서형 -->
+  <div class="step">
+    <div class="no" style="background:#fff; color:var(--blue); border:2px solid var(--blue); box-shadow:none">3</div>
+    <div class="tx"><h2>또는 — '기획서' 형태로도 보여준다</h2><p>목업이 안 맞는 서비스(컨설팅·B2B 등)는 글로 또렷하게.</p></div>
+    <span class="lane idea">아이디어 쪽</span>
+  </div>
+  <div class="card">
+    <div class="ct"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="ce">비전 페이지 · 기획서형</span><span style="margin-left:auto; display:flex; gap:6px"><span style="font-size:11px; font-weight:800; color:var(--muted); background:var(--bg); border:1px solid var(--line); padding:3px 11px; border-radius:999px">🖼 목업형</span><span style="font-size:11px; font-weight:800; color:#fff; background:var(--blue); padding:3px 11px; border-radius:999px">📄 기획서형</span></span></div>
+    <div class="cb">
+      <div class="name">에코그립 — 버려진 뚜껑이 손안의 무드</div>
+      <div class="tagline">페트병 뚜껑을 업사이클링한 친환경 그립톡, Gen Z를 위한 굿즈</div>
+      <p style="font-size:11.5px; color:var(--blue); font-weight:700; margin:0 0 4px;"><span style="background:var(--sky); padding:3px 10px; border-radius:999px;">✨ AI가 자동 생성한 기획서</span></p>
+      <div class="divider"></div>
+      <div class="plan">
+        <div class="prow"><div class="pk">⛳ 문제</div><div class="pv">버려지는 페트병 뚜껑은 재활용이 어렵고, Gen Z는 가치소비를 원하지만 마땅한 친환경 굿즈가 적다.</div></div>
+        <div class="prow"><div class="pk">💡 해결</div><div class="pv">폐뚜껑을 압출·가공해 디자인 그립톡으로 업사이클링. '버린 게 예뻐진다'는 스토리를 SNS로 확산.</div></div>
+        <div class="prow"><div class="pk">🎯 타겟</div><div class="pv">환경에 관심 많고 인증샷·가치소비에 적극적인 Gen Z 소비자.</div></div>
+        <div class="prow"><div class="pk">⚙️ 핵심 기능</div><div class="pv">① 폐뚜껑 수거·가공 ② 디자인 그립톡 제작 ③ 온라인 판매(스토어·SNS)</div></div>
+        <div class="prow"><div class="pk">💰 수익</div><div class="pv">그립톡 판매(개당 12,000원) · 기업 ESG 굿즈 B2B 납품 · 한정 콜라보.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step">
+    <div class="no">4</div>
+    <div class="tx"><h2>팀원에게 물어볼 질문 1개를 정한다</h2><p>AI 질문 2개 + 내 질문 1개 = 매칭 3질문.</p></div>
+    <span class="lane idea">아이디어 쪽</span>
+  </div>
+  <div class="card">
+    <div class="ct"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="ce">제공자 질문 작성</span></div>
+    <div class="cb">
+      <div class="two">
+        <div>
+          <h3 class="q" style="font-size:17px">팀원에게 꼭 묻고 싶은 1가지</h3>
+          <div class="input">우리 사업에서 '환경'은 양보 못 할 가치예요. 자원 재활용에 어떤 생각을 가지고 계신가요?</div>
+          <div class="meta"><span style="color:var(--blue)">💡 '중요 요소'에서 골라도 좋아요</span></div>
+        </div>
+        <div>
+          <div class="lbl">팀원이 답할 3질문</div>
+          <div class="role"><span class="mk" style="background:var(--sky);color:var(--blue)">AI</span>환경·재활용 경험은?<span class="tag2">자동</span></div>
+          <div class="role"><span class="mk" style="background:var(--sky);color:var(--blue)">AI</span>Gen Z 트렌드 이해도?<span class="tag2">자동</span></div>
+          <div class="role me"><span class="mk" style="background:var(--blue);color:#fff">나</span>환경에 대한 생각은?<span class="tag2">제공자</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LANE SWITCH -->
+  <div class="divider-lane"><span>🟩 팀원이 되는 사람</span></div>
+
+  <!-- STEP 5 -->
+  <div class="step">
+    <div class="no">5</div>
+    <div class="tx"><h2>팀원이 아이디어를 둘러보다 발견</h2><p>'어, 내가 할 수 있는 자리가 있네?'</p></div>
+    <span class="lane team">팀원 쪽</span>
+  </div>
+  <div class="card">
+    <div class="ct"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="ce">팀원 · 아이디어 상세</span></div>
+    <div class="cb">
+      <div class="two">
+        <div>
+          <div class="name">에코그립</div>
+          <div class="tagline">페트병 뚜껑 → 친환경 그립톡</div>
+          <div class="mock">
+            <div class="mm"><div class="mm-cap">① 제품</div><div class="mm-body"><div class="mm1"><div class="mg"></div><div class="nm">에코그립</div></div></div></div>
+            <div class="mm"><div class="mm-cap">② 스토어</div><div class="mm-body"><div class="mm-grid"><div class="mm-cell"><div class="thumb"><div class="mg"></div></div><div class="cn">민트</div></div><div class="mm-cell"><div class="thumb"><div class="mg"></div></div><div class="cn">오션</div></div></div></div></div>
+            <div class="mm"><div class="mm-cap">③ SNS</div><div class="mm-body"><div class="mm-sns-img"><div class="mg sm"></div></div></div></div>
+          </div>
+        </div>
+        <div>
+          <div class="lbl">필요한 팀원 (내 자리 = 파란색)</div>
+          <div class="role me"><span class="mk" style="background:var(--blue);color:#fff">나</span>압출 기계·생산 시설 지식<span class="tag2">내 분야</span></div>
+          <div class="role"><span class="mk">◎</span>카페·공방 사업 경력자<span class="tag2">모집</span></div>
+          <div class="role"><span class="mk">◎</span>SNS 마케팅 전문가<span class="tag2">모집</span></div>
+          <button class="btn">3질문 답하고 합류하기 →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="step">
+    <div class="no">6</div>
+    <div class="tx"><h2>3가지 질문에 답한다</h2><p>이력서 말고, 이 아이디어에 딱 맞는 질문에.</p></div>
+    <span class="lane team">팀원 쪽</span>
+  </div>
+  <div class="card">
+    <div class="ct"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="ce">팀원 · 3질문 답변</span></div>
+    <div class="cb">
+      <p class="sub">고정 프로필이 아니라, <b>이 아이디어에 맞게 만들어진 질문</b>이에요.</p>
+      <div class="qcard"><p class="qtext">자원 재활용·환경보호 경험이 있나요?<span class="qsrc ai">AI 질문</span></p><div class="ans">대학 때 제로웨이스트 동아리를 했고, 폐플라스틱 가공은 직무로도 관심 있었어요.</div></div>
+      <div class="qcard"><p class="qtext">Gen Z 트렌드를 얼마나 이해하나요?<span class="qsrc ai">AI 질문</span></p><div class="ans">그립톡은 디자인·컬러가 SNS에서 먹히는 카테고리라 생각해요.</div></div>
+      <div class="qcard pr"><p class="qtext">환경에 대한 본인의 생각은?<span class="qsrc prv">제공자 질문</span></p><div class="ans">마케팅용이 아니라 공정 자체에서 폐기물을 줄이는 게 핵심이라 봐요.</div></div>
+      <button class="btn">답변 완료 · 매칭률 보기 →</button>
+    </div>
+  </div>
+
+  <!-- STEP 7 -->
+  <div class="step">
+    <div class="no">7</div>
+    <div class="tx"><h2>나와 이 팀의 '매칭률'이 나온다</h2><p>왜 맞는지, 약점은 뭔지까지 솔직하게.</p></div>
+    <span class="lane team">팀원 쪽</span>
+  </div>
+  <div class="card">
+    <div class="ct"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="ce">매칭률 결과</span></div>
+    <div class="cb">
+      <div class="two">
+        <div>
+          <p class="sub" style="margin-bottom:4px">박준영님(압출·생산) ↔ 에코그립</p>
+          <div class="score"><div class="n">86<span style="font-size:19px">%</span></div><div class="l">아주 잘 맞아요</div><div class="bar"><div class="fill" style="width:86%"></div></div></div>
+        </div>
+        <div>
+          <div class="reason"><span class="ic">🌱</span><div><div class="t">환경 마인드 — 잘 맞음</div><div class="d">제공자의 핵심 가치와 정확히 일치</div></div></div>
+          <div class="reason"><span class="ic">🛠</span><div><div class="t">필요 역량 — 정확히 채움</div><div class="d">압출·생산이 1순위 역할과 맞물림</div></div></div>
+          <div class="reason"><span class="ic">⚠️</span><div><div class="t">Gen Z 감각 — 보통</div><div class="d">마케팅 팀원과 보완 필요 (솔직하게)</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 8 -->
+  <div class="step">
+    <div class="no">8</div>
+    <div class="tx"><h2>제안 → 수락 → 슬랙으로!</h2><p>여기까지가 ORBIT. 이제 팀의 여정이 시작돼요.</p></div>
+    <span class="lane team">팀원 쪽</span>
+  </div>
+  <div class="card">
+    <div class="ct"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="ce">합류 제안 → 슬랙 이동</span></div>
+    <div class="cb">
+      <h3 class="q" style="font-size:17px">이 팀에 합류 제안 보내기</h3>
+      <p class="sub">양쪽이 수락하면 상세 프로필이 공개되고, 슬랙 채널로 이동해 대화를 시작해요.</p>
+      <button class="btn">합류 제안 보내기 →</button>
+      <div class="slack"><span class="ico">💬</span><div class="t">에코그립 팀 슬랙 채널</div><span class="a" style="background:#fff; color:#4A154B; padding:5px 14px; border-radius:8px; font-weight:800; opacity:1">참여하기 →</span></div>
+      <div class="guard"><span style="font-size:14px">🛡</span><div class="t"><b style="color:var(--navy)">여기까지가 ORBIT.</b> 이후 모든 협업과 결정은 팀의 몫이며, ORBIT은 관여하지 않습니다.</div></div>
+    </div>
+  </div>
+
+  <div class="foot">
+    한 줄 → 구체화 → 비전 페이지 → 제공자 질문 → 둘러보기 → 3질문 → 매칭률 → 슬랙<br>
+    <b style="color:var(--navy)">ORBIT</b> — 빛나는 아이디어를 함께 실현할 팀원을 찾는 여정
+  </div>
+
+</div>
+<script>
+function togglePick(el){
+  el.classList.toggle('on');
+  const picks = document.querySelectorAll('.role.pick.on').length;
+  const btn = document.getElementById('vp-next');
+  if(picks > 0){
+    btn.disabled = false;
+    btn.textContent = '선택한 ' + picks + '명 팀원 찾기 →';
+  } else {
+    btn.disabled = true;
+    btn.textContent = '팀원을 선택하세요 →';
+  }
+}
+</script>
+</body>
+</html>

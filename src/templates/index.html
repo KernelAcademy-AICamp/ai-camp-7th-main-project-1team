@@ -1,0 +1,1104 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ORBIT — 빛나는 아이디어를 함께 실현할 팀원을 찾다</title>
+<style>
+  :root{
+    --navy:#0b1226; --blue:#2563eb; --blue2:#3b82f6; --sky:#eff6ff;
+    --bg:#f8fafc; --card:#ffffff; --text:#101828; --muted:#667085;
+    --line:#e5e7eb; --green:#10b981; --mint:#d1fae5;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR","Segoe UI",sans-serif;
+    color:var(--text); background:var(--bg); word-break:keep-all; line-height:1.6;}
+  .hidden{display:none !important;}
+
+  /* 상단 네비 */
+  .nav{position:sticky; top:0; z-index:50; background:rgba(255,255,255,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); padding:13px 0;}
+  .nav .in{width:min(1080px,92%); margin:0 auto; display:flex; align-items:center; gap:10px;}
+  .navmenu{display:flex; gap:24px; margin-left:34px;}
+  .navmenu a{font-size:13.5px; font-weight:700; color:#475569; cursor:pointer;}
+  .navmenu a:hover{color:var(--blue);}
+  .navcta{background:var(--navy); color:#fff; border:none; border-radius:9px; padding:8px 15px; font-size:13px; font-weight:800; cursor:pointer;}
+  .navcta:hover{background:#1a2342;}
+  @media(max-width:760px){ .navmenu{display:none;} }
+  .mark{display:inline-flex; align-items:center; gap:9px; font-weight:900; letter-spacing:.16em; color:var(--navy); font-size:16px; cursor:pointer; background:none; border:none;}
+  .logo{width:22px; height:22px; border:5px solid var(--navy); border-radius:50%; position:relative;}
+  .logo::after{content:""; position:absolute; width:30px; height:3px; background:var(--blue); border-radius:999px; transform:rotate(-15deg); top:8px; left:-8px;}
+  .nav .right{margin-left:auto; display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted);}
+  .nav .modesw{position:relative; display:inline-grid; grid-template-columns:1fr 1fr; background:#eef2f7; border-radius:999px; padding:4px;}
+  .nav .modesw .seg{position:relative; z-index:2; padding:7px 15px; font-size:12.5px; font-weight:800; color:var(--muted); border:none; background:none; cursor:pointer; transition:color .2s; white-space:nowrap; text-align:center;}
+  .nav .modesw .seg.on{color:#fff;}
+  .nav .modesw .knob{position:absolute; top:4px; bottom:4px; left:4px; width:calc(50% - 4px); border-radius:999px; background:var(--blue); box-shadow:0 2px 6px rgba(37,99,235,.35); transition:left .25s cubic-bezier(.4,0,.2,1), background .2s; z-index:1;}
+  .nav .modesw.team .knob{left:50%; background:#10b981; box-shadow:0 2px 6px rgba(16,185,129,.35);}
+  .linkbtn{background:none; border:none; color:var(--muted); font-size:12.5px; cursor:pointer;}
+  .linkbtn:hover{color:var(--blue);}
+
+  .wrap{width:min(960px,92%); margin:0 auto;}
+  .narrow{width:min(720px,92%); margin:0 auto;}
+
+  /* 공통 컴포넌트 */
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:7px; background:var(--blue); color:#fff; border:none; border-radius:12px; padding:13px 20px; font-size:14.5px; font-weight:800; cursor:pointer; transition:.15s;}
+  .btn:hover{background:#1d4ed8;} .btn:disabled{background:#cbd5e1; cursor:not-allowed;}
+  .btn.full{width:100%;} .btn.green{background:var(--green);} .btn.green:hover{background:#059669;}
+  .btn.ghost{background:#fff; color:var(--navy); border:1px solid var(--line);} .btn.ghost:hover{background:#f1f5f9;}
+  .btn.dark{background:var(--navy);} .btn.lg{padding:15px 28px; font-size:15.5px;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:18px; padding:22px 24px; margin-bottom:16px; box-shadow:0 10px 30px rgba(15,23,42,.04);}
+  .eyebrow{font-size:12px; font-weight:800; color:var(--blue); letter-spacing:.03em; margin:0 0 12px; display:flex; align-items:center; gap:7px;}
+  .fade{animation:rise .35s ease both;}
+  @keyframes rise{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;}}
+  .soon{font-size:10.5px; font-weight:800; color:#92400e; background:#fef3c7; border-radius:999px; padding:2px 8px; margin-left:6px;}
+
+  /* 랜딩 */
+  .lwrap{width:min(1080px,92%); margin:0 auto;}
+  .lhero{display:grid; grid-template-columns:1.05fr .95fr; gap:44px; align-items:center; padding:56px 0 44px;}
+  @media(max-width:860px){ .lhero{grid-template-columns:1fr; gap:30px;} }
+  .badge{display:inline-block; font-size:12.5px; font-weight:800; color:var(--blue); border:1px solid #bfdbfe; background:var(--sky); padding:7px 14px; border-radius:999px; margin-bottom:22px;}
+  .lhero h1{font-size:54px; line-height:1.1; letter-spacing:-.045em; color:var(--navy); margin:0 0 22px; font-weight:900;}
+  .lhero h1 .bl{color:var(--blue);}
+  .lhero h1 .gr{color:#10b981;}
+  .badge.rider{color:#047857; border-color:#a7f3d0; background:#ecfdf5;}
+  /* 히어로 슬라이더 */
+  .hero-slider{position:relative;}
+  .hslide{transition:opacity .55s ease;}
+  .hslide:not(.active){opacity:0; visibility:hidden; position:absolute; top:0; left:0; right:0;}
+  .hslide.active{opacity:1; visibility:visible; position:relative;}
+  .hdots{display:flex; gap:8px; justify-content:center; margin-top:22px;}
+  .hdot{width:9px; height:9px; border-radius:999px; background:#cbd5e1; cursor:pointer; transition:.25s; border:none; padding:0;}
+  .hdot.on{background:var(--navy); width:24px;}
+  .lhero .desc{color:var(--muted); font-size:15.5px; line-height:1.75; margin:0 0 28px; max-width:440px;}
+  .lhero .cta{display:flex; gap:10px; flex-wrap:wrap;}
+  /* 역할 선택 카드 (Shooter / Rider) */
+  .role-pick{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:8px 0 6px;}
+  .rolecard{display:block; text-align:center; border:1.5px solid var(--line); border-radius:20px; padding:30px 20px; background:#fff; cursor:pointer; transition:.16s; font-family:inherit;}
+  .rolecard:hover{transform:translateY(-3px); box-shadow:0 18px 40px rgba(15,23,42,.12);}
+  .rolecard.shooter:hover{border-color:var(--blue);}
+  .rolecard.rider:hover{border-color:var(--green);}
+  .rc-emoji{font-size:42px; margin-bottom:10px; line-height:1;}
+  .rc-title{font-size:23px; font-weight:900; color:var(--navy); letter-spacing:-.02em;}
+  .rolecard.shooter .rc-title{color:var(--blue);}
+  .rolecard.rider .rc-title{color:#047857;}
+  .rc-sub{font-size:14.5px; color:#334155; font-weight:700; margin-top:7px;}
+  .rc-hint{font-size:12px; color:var(--muted); margin-top:4px;}
+  @media(max-width:680px){ .role-pick{grid-template-columns:1fr;} }
+  @media(max-width:860px){ .lhero h1{font-size:38px;} }
+  /* 히어로 목업 카드 */
+  .heromock{background:#fff; border:1px solid var(--line); border-radius:18px; box-shadow:0 24px 60px rgba(15,23,42,.13); overflow:hidden;}
+  .hm-top{padding:12px 16px; border-bottom:1px solid var(--line); display:flex; gap:6px;}
+  .hm-top i{width:9px;height:9px;border-radius:50%;background:#e2e6ee; display:block;}
+  .hm-body{padding:18px;}
+  .hm-label{font-size:11px; color:var(--muted); font-weight:700; margin-bottom:6px;}
+  .hm-idea{background:var(--sky); border:1px solid #dbeafe; border-radius:11px; padding:13px 15px; font-size:13.5px; color:#334155; line-height:1.55; margin-bottom:13px;}
+  .hm-status{background:var(--navy); color:#fff; border-radius:11px; padding:12px 15px; font-size:12.5px; font-weight:600; display:flex; align-items:center; gap:9px; margin-bottom:13px;}
+  .hm-status .sp{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite; flex:0 0 auto;}
+  .hm-mate{display:flex; align-items:center; gap:11px; border:1px solid var(--line); border-radius:11px; padding:11px 13px; margin-bottom:8px;}
+  .hm-mate .av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--blue));flex:0 0 auto;}
+  .hm-mate .mt{font-size:12.5px; font-weight:800; color:var(--navy);}
+  .hm-mate .md{font-size:11px; color:var(--muted); margin-top:2px; line-height:1.4;}
+  .hm-mate .bg{margin-left:auto; font-size:10.5px; font-weight:800; padding:3px 9px; border-radius:999px; flex:0 0 auto;}
+  .hm-mate .bg.req{background:var(--navy); color:#fff;}
+  .hm-mate .bg.rec{background:var(--sky); color:var(--blue);}
+  /* 섹션 공통 */
+  .lsec{padding:52px 0;}
+  .lsec.alt{background:#f1f5f9; border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .lsec-t{text-align:center; font-size:26px; font-weight:800; color:var(--navy); letter-spacing:-.03em; margin:0 0 8px;}
+  .lsec-s{text-align:center; color:var(--muted); font-size:14px; margin:0 0 30px;}
+  /* 책임 2카드 */
+  .two2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media(max-width:760px){ .two2{grid-template-columns:1fr;} }
+  .bigcard{background:#fff; border:1px solid var(--line); border-radius:18px; padding:28px; box-shadow:0 12px 30px rgba(15,23,42,.05);}
+  .bigcard .ic{width:48px;height:48px;border-radius:13px;background:var(--sky);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px;}
+  .bigcard .t{font-size:18px; font-weight:800; color:var(--navy); margin-bottom:8px;}
+  .bigcard .d{font-size:13.5px; color:var(--muted); line-height:1.65;}
+  /* 5단계 타임라인 */
+  .flowbox{background:linear-gradient(160deg,#eff6ff,#eef2ff); border:1px solid #dbeafe; border-radius:22px; padding:38px 26px;}
+  .flow{display:flex; align-items:flex-start; justify-content:space-between; gap:4px;}
+  .fstep{flex:1; text-align:center; position:relative;}
+  .fstep .ic{width:52px;height:52px;border-radius:50%;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:23px;margin:0 auto 11px;position:relative;z-index:2;}
+  .fstep.last .ic{background:var(--blue); border-color:var(--blue);}
+  .fstep .ft{font-size:12.5px; font-weight:800; color:var(--navy);}
+  .fline{position:absolute; top:26px; left:50%; width:100%; height:2px; background:#c7d6f0; z-index:1;}
+  .flowcap{text-align:center; color:var(--muted); font-size:13px; margin-top:24px;}
+  @media(max-width:760px){ .flow{flex-direction:column; gap:16px;} .fline{display:none;} .fstep{display:flex; align-items:center; gap:14px; text-align:left;} .fstep .ic{margin:0;} }
+  /* 프로젝트 예시 */
+  .exgrid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  @media(max-width:760px){ .exgrid{grid-template-columns:1fr;} }
+  .excard{background:linear-gradient(160deg,#eef6ff,#f0f4ff); border:1px solid #dbeafe; border-radius:18px; padding:26px;}
+  .excard .et{font-size:21px; font-weight:800; color:var(--navy); line-height:1.35; margin-bottom:9px;}
+  .excard .ed{font-size:13px; color:var(--muted); line-height:1.6; margin-bottom:18px;}
+  .ex-badge{display:inline-block; font-size:11.5px; font-weight:800; color:var(--blue); background:#fff; border:1px solid #dbeafe; padding:5px 11px; border-radius:999px; margin-bottom:14px;}
+  .exmini{display:flex; flex-direction:column; gap:8px;}
+  .emrow{display:flex; gap:10px; background:rgba(255,255,255,.7); border:1px solid #dbeafe; border-radius:10px; padding:9px 12px;}
+  .emk{font-size:12px; font-weight:800; color:var(--navy); flex:0 0 56px;}
+  .emv{font-size:12px; color:#475569; line-height:1.45;}
+  .exright{background:#fff; border:1px solid var(--line); border-radius:18px; padding:24px;}
+  .exh{font-size:14.5px; font-weight:800; color:var(--navy); margin:0 0 12px;}
+  .exli{display:flex; align-items:center; gap:9px; font-size:13px; color:#475569; padding:6px 0;}
+  .exli .d{color:var(--blue); font-weight:900;}
+  .exli .ck{color:var(--green); font-weight:900;}
+  .exdiv{height:1px; background:var(--line); margin:16px 0;}
+  /* ORBIT 언어 */
+  .lang4{display:grid; grid-template-columns:repeat(4,1fr); gap:13px;}
+  @media(max-width:760px){ .lang4{grid-template-columns:1fr 1fr;} }
+  .langc{background:#fff; border:1px solid var(--line); border-radius:14px; padding:18px 20px;}
+  .langc .lk{font-size:12px; color:var(--muted); margin-bottom:7px;}
+  .langc .lv{font-size:16px; font-weight:800; color:var(--navy);}
+  .langc .lv b{color:var(--blue);}
+  /* 마무리 CTA */
+  .endcta{background:var(--navy); border-radius:22px; padding:42px 38px; display:flex; align-items:center; gap:20px; flex-wrap:wrap;}
+  .endcta h2{font-size:27px; color:#fff; margin:0; letter-spacing:-.02em; line-height:1.3; flex:1; min-width:240px;}
+  .endcta h2 .bl{color:var(--blue2);}
+  .endcta .btn{background:#fff; color:var(--navy); margin-left:auto;} .endcta .btn:hover{background:#eef2f7;}
+  /* 푸터 */
+  .lfoot{border-top:1px solid var(--line); margin-top:42px; padding:26px 0 50px; display:flex; align-items:center; gap:10px; color:var(--muted); font-size:12.5px;}
+  .lfoot .ft-r{margin-left:auto;}
+
+  /* 로그인 */
+  .loginpage{min-height:calc(100vh - 56px); background:linear-gradient(150deg,#0b1226 0%,#16225a 60%,#1e3a8a 100%); display:flex; align-items:center; justify-content:center; padding:36px 16px;}
+  .loginbox{max-width:430px; width:100%; text-align:center; background:#fff; border-radius:22px; padding:42px 36px; box-shadow:0 26px 64px rgba(0,0,0,.32);}
+  .loginbox .mark{justify-content:center; font-size:21px; margin-bottom:14px;}
+  .lb-sub{color:var(--muted); font-size:13px; margin:0 0 24px; line-height:1.55;}
+  .loginbox h2{font-size:23px; color:var(--navy); margin:0 0 6px; letter-spacing:-.02em;}
+  .lb-desc{color:var(--muted); font-size:13.5px; margin:0 0 24px;}
+  .gbtn{display:flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:13px; border:1px solid var(--line); border-radius:12px; background:#fff; font-size:14.5px; font-weight:700; color:#3c4043; cursor:pointer; margin-bottom:10px;}
+  .gbtn:hover{background:#f8fafc; box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  .gicon{width:18px;height:18px;}
+  .kbtn{display:flex; align-items:center; justify-content:center; gap:9px; width:100%; padding:13px; border:none; border-radius:12px; background:#FEE500; color:#191600; font-size:14.5px; font-weight:800; cursor:pointer;}
+  .kbtn:hover{background:#f5dc00;}
+  .ldiv{display:flex; align-items:center; gap:12px; color:var(--muted); font-size:12px; margin:18px 0 16px;}
+  .ldiv::before,.ldiv::after{content:""; flex:1; height:1px; background:var(--line);}
+  .lemail{width:100%; border:1px solid var(--line); border-radius:12px; padding:13px 15px; font-size:14px; margin-bottom:10px; font-family:inherit; color:var(--text);}
+  .lemail:focus{outline:none; border-color:var(--blue);}
+  .demo-note{font-size:11.5px; color:#92400e; background:#fffbeb; border:1px solid #fef3c7; border-radius:10px; padding:10px 12px; margin-top:18px; line-height:1.5;}
+  .lterms{font-size:11px; color:var(--muted); margin-top:16px;}
+  .lterms u{cursor:pointer;}
+
+  /* 모드 선택 */
+  .modewrap{max-width:680px; margin:60px auto; text-align:center;}
+  .modewrap h2{font-size:24px; color:var(--navy); margin:0 0 6px;}
+  .modewrap .sub{color:var(--muted); font-size:14px; margin:0 0 28px;}
+  .modecards{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .modecard{border:1px solid var(--line); border-radius:18px; padding:30px 24px; cursor:pointer; transition:.15s; background:var(--card);}
+  .modecard:hover{border-color:var(--blue); box-shadow:0 12px 30px rgba(37,99,235,.1); transform:translateY(-2px);}
+  .modecard .em{font-size:38px; margin-bottom:12px;}
+  .modecard .t{font-size:18px; font-weight:800; color:var(--navy); margin-bottom:6px;}
+  .modecard .d{font-size:13px; color:var(--muted); line-height:1.55;}
+  @media(max-width:680px){ .modecards{grid-template-columns:1fr;} }
+
+  /* 입력 */
+  .inputcard h2{margin:0 0 4px; font-size:21px; color:var(--navy); letter-spacing:-.02em;}
+  .inputcard .sub{color:var(--muted); font-size:13.5px; margin:0 0 14px;}
+  textarea{width:100%; min-height:74px; resize:vertical; background:var(--sky); border:1px solid #dbeafe; border-radius:13px; padding:13px 15px; font-size:14.5px; font-family:inherit; color:#334155;}
+  textarea:focus{outline:none; border-color:var(--blue);}
+  .attach{display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--muted); margin-top:10px; cursor:pointer;}
+  .attach:hover{color:var(--blue);}
+  .chips{display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;}
+  .chip{cursor:pointer; font-size:12.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:6px 12px; background:#fff;}
+  .chip:hover{color:var(--blue); border-color:var(--blue);}
+
+  /* 보충질문 */
+  .boostq{margin-bottom:18px;}
+  .boostq .qt{font-size:16px; font-weight:800; color:var(--navy); margin-bottom:10px;}
+  .opt{display:flex; align-items:center; gap:10px; border:1px solid var(--line); border-radius:12px; padding:13px 15px; margin-bottom:8px; cursor:pointer; font-size:14px; color:#334155; transition:.12s;}
+  .opt .rd{width:17px;height:17px;border-radius:50%;border:2px solid #cbd5e1; flex:0 0 auto;}
+  .opt:hover{border-color:var(--blue2);}
+  .opt.sel{border-color:var(--blue); background:var(--sky);}
+  .opt.sel .rd{border-color:var(--blue); background:var(--blue); box-shadow:inset 0 0 0 3px #fff;}
+
+  /* 히어로 */
+  .hero{background:linear-gradient(150deg,#0b1226 0%,#16225a 60%,#1e3a8a 100%); color:#fff; border-radius:18px; padding:30px 30px 26px; margin-bottom:18px;}
+  .hero .tags{display:flex; gap:7px; flex-wrap:wrap; margin-bottom:13px;}
+  .hero .tags span{font-size:11.5px; font-weight:700; padding:4px 11px; border-radius:999px; background:rgba(255,255,255,.14); color:#dbeafe;}
+  .hero .tags span.hot{background:#fbbf24; color:#3b1d00;}
+  .hero h1{font-size:25px; letter-spacing:-.03em; margin:0 0 8px; line-height:1.3;}
+  .hero .lead{font-size:14px; color:#c7d2fe; line-height:1.65; margin:0;}
+
+  .story p{font-size:14px; line-height:1.85; color:#334155; margin:0 0 12px;}
+  .story p:last-child{margin-bottom:0;}
+  .why-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+  .why{background:var(--bg); border:1px solid var(--line); border-radius:14px; padding:15px 14px;}
+  .why .ic{font-size:22px; margin-bottom:7px;} .why .t{font-size:13.5px; font-weight:800; color:var(--navy); margin-bottom:4px;} .why .d{font-size:12px; color:var(--muted); line-height:1.5;}
+  @media(max-width:680px){ .why-grid{grid-template-columns:1fr;} }
+
+  /* 목업/기획서 탭 */
+  .vtabs{display:flex; gap:6px; margin-bottom:14px;}
+  .vtab{font-size:12.5px; font-weight:800; padding:7px 14px; border-radius:999px; border:1px solid var(--line); background:#fff; color:var(--muted); cursor:pointer;}
+  .vtab.on{background:var(--blue); color:#fff; border-color:var(--blue);}
+  .mock{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
+  .mm{border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#fff;}
+  .mm .cap{font-size:10px; font-weight:800; color:var(--blue); text-align:center; padding:7px 0 3px;}
+  .mm .img{height:74px; background:linear-gradient(135deg,#d1fae5,#dbeafe); display:flex; align-items:center; justify-content:center; font-size:24px;}
+  .plan{display:flex; flex-direction:column;}
+  .prow{display:grid; grid-template-columns:90px 1fr; gap:14px; padding:11px 0; border-bottom:1px solid var(--line);}
+  .prow:last-child{border-bottom:0;}
+  .prow .pk{font-size:13px; font-weight:800; color:var(--navy);} .prow .pv{font-size:13px; color:#334155; line-height:1.6;}
+
+  /* 팀원 체크 */
+  .pick{display:flex; align-items:flex-start; gap:10px; border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin-bottom:8px; cursor:pointer; transition:.12s;}
+  .pick:hover{border-color:var(--blue2);}
+  .pick.on{border-color:var(--blue); background:var(--sky);}
+  .pick .cbx{width:19px;height:19px;border-radius:6px;border:2px solid #cbd5e1; flex:0 0 auto; margin-top:1px; position:relative;}
+  .pick.on .cbx{background:var(--blue); border-color:var(--blue);}
+  .pick.on .cbx::after{content:"✓"; position:absolute; inset:0; color:#fff; font-size:12px; font-weight:900; display:flex; align-items:center; justify-content:center;}
+  .pick .role{font-size:13.5px; font-weight:700; color:var(--navy);}
+  .pick .det{font-size:12px; color:var(--muted); margin-top:2px;}
+  .factor{display:flex; align-items:center; gap:9px; font-size:13px; color:#334155; padding:6px 0;}
+  .factor .ck{color:var(--green); font-weight:900;}
+
+  .editq{width:100%; border:1px solid var(--blue); background:#fff; border-radius:11px; padding:11px 13px; font-size:13.5px; font-family:inherit; color:var(--navy); resize:vertical; min-height:54px;}
+  .qcard{border:1px solid var(--line); border-radius:13px; padding:12px 15px; margin-bottom:10px;}
+  .qcard.pr{border-color:var(--blue); background:var(--sky);}
+  .qtext{font-size:13.5px; font-weight:700; color:var(--navy); margin:0;}
+  .qsrc{font-size:10.5px; font-weight:800; padding:2px 8px; border-radius:6px; margin-left:7px;}
+  .qsrc.ai{background:#fff; color:var(--blue); border:1px solid #dbeafe;}
+  .qsrc.prv{background:#fef3c7; color:#92400e;}
+  .ans{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:12.5px; color:#334155; line-height:1.55; margin-top:8px;}
+  .ans .cc{color:var(--muted); font-size:11.5px; margin-top:5px;}
+
+  .myrole{border:2px solid var(--blue); background:var(--sky); border-radius:16px; padding:16px 18px; margin-bottom:12px;}
+  .myrole .top{display:flex; align-items:center; gap:10px; margin-bottom:8px;}
+  .myrole .mk{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;flex:0 0 auto;}
+  .myrole .rt{font-size:14.5px; font-weight:800; color:var(--navy);} .myrole .rtag{margin-left:auto; font-size:11px; font-weight:800; background:var(--blue); color:#fff; padding:3px 11px; border-radius:999px;}
+  .myrole .det{font-size:12.5px; color:#475569; line-height:1.6;}
+  .role{display:flex; align-items:flex-start; gap:9px; padding:10px 13px; border:1px solid var(--line); border-radius:11px; margin-bottom:7px; font-size:13px; color:#475569;}
+  .role .mk{width:19px;height:19px;border-radius:50%;background:var(--mint);color:#047857;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex:0 0 auto; margin-top:1px;}
+  .role .rdet{color:var(--muted); font-size:11.5px; margin-top:2px;}
+
+  .score{text-align:center; padding:6px 0;}
+  .score .n{font-size:46px; font-weight:900; color:var(--green); line-height:1;} .score .l{font-size:13px; color:var(--green); margin:5px 0 11px; font-weight:700;}
+  .bar{background:var(--bg); border-radius:99px; height:10px; overflow:hidden; max-width:420px; margin:0 auto;} .bar .fill{height:100%; background:var(--green); border-radius:99px; width:0; transition:width 1s ease;}
+  .fit{display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--line);} .fit:last-child{border-bottom:0;}
+  .fit .ic{font-size:16px;} .fit .t{font-size:13px; font-weight:700; color:var(--navy);} .fit .d{font-size:11.5px; color:var(--muted);} .fit .pct{margin-left:auto; font-size:12.5px; font-weight:900; color:var(--green);}
+  .verdict{text-align:center; color:var(--muted); font-size:13px; margin-top:12px;} .verdict b{color:var(--navy);}
+  .slack{display:flex; align-items:center; gap:11px; background:#4A154B; color:#fff; border-radius:14px; padding:15px 18px; margin-top:14px;}
+  .slack .ico{font-size:20px;} .slack .t{font-size:14px; font-weight:800;} .slack .a{margin-left:auto; background:#fff; color:#4A154B; padding:7px 15px; border-radius:9px; font-weight:800; font-size:12.5px; text-decoration:none;}
+
+  .loading{display:flex; align-items:center; gap:12px; color:var(--muted); font-size:14px; padding:18px 2px;}
+  .spinner{width:20px;height:20px;border:3px solid #e2e8f0;border-top-color:var(--blue);border-radius:50%;animation:spin 1s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .banner{background:linear-gradient(135deg,#eff6ff,#eef2ff); border:1px solid #c7d2fe; border-radius:14px; padding:14px 18px; margin-bottom:16px; font-size:13px; color:#334155;} .banner b{color:var(--navy);}
+  .browsecard{border:1px solid var(--line); border-radius:16px; padding:18px 20px; cursor:pointer; transition:.15s; background:var(--card);}
+  .browsecard:hover{border-color:var(--green); box-shadow:0 10px 26px rgba(16,185,129,.1);}
+  .browsecard .bt{font-size:17px; font-weight:800; color:var(--navy);} .browsecard .bd{font-size:13px; color:var(--muted); margin:4px 0 10px;}
+  .browsecard .fitpct{font-size:11.5px; font-weight:800; color:#047857; background:var(--mint); padding:3px 10px; border-radius:999px;}
+  .err{color:#dc2626; background:#fef2f2; border:1px solid #fecaca; border-radius:12px; padding:13px 16px;}
+  /* 마이페이지 */
+  .myhead{margin-bottom:20px;}
+  .myhi{font-size:18px; color:var(--navy); margin-bottom:14px;}
+  .myhi b{font-weight:900;}
+  .mytabs{display:flex; gap:8px;}
+  .mytab{flex:1; padding:13px; border:1px solid var(--line); border-radius:12px; background:#fff; color:var(--muted); font-weight:800; font-size:14px; cursor:pointer; transition:.15s;}
+  .mytab.on{background:var(--navy); color:#fff; border-color:var(--navy);}
+  .myh{font-size:16px; font-weight:800; color:var(--navy); margin:0 0 12px;}
+  .pill{font-size:11px; font-weight:800; padding:3px 10px; border-radius:999px; flex:0 0 auto;}
+  .pill.blue{background:var(--sky); color:var(--blue);} .pill.green{background:var(--mint); color:#047857;} .pill.amber{background:#fef3c7; color:#92400e;}
+  .prop{display:flex; align-items:flex-start; gap:11px; border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin-bottom:9px;}
+  .prop.accepted{background:#f0fdf4; border-color:#bbf7d0;}
+  .pav{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex:0 0 auto;}
+  .pn{font-size:13.5px; font-weight:800; color:var(--navy); display:flex; align-items:center; gap:7px; flex-wrap:wrap;}
+  .pr{font-size:12px; color:var(--muted); margin-top:2px;}
+  .pl{font-size:12px; color:#475569; margin-top:5px; font-style:italic;}
+  .pbtns{display:flex; flex-direction:column; gap:6px; flex:0 0 auto;}
+  .btn.sm{padding:8px 14px; font-size:12.5px; border-radius:9px;}
+  .slackmini{background:#4A154B; color:#fff; font-size:12px; font-weight:800; padding:7px 12px; border-radius:9px; cursor:pointer; flex:0 0 auto; text-decoration:none; align-self:center;}
+  .askfor li{margin:7px 0; color:#475569;}
+  .sec-title{font-size:21px; color:var(--navy); margin:24px 0 14px; letter-spacing:-.02em;}
+  .pagepad{padding:24px 0 80px;}
+</style>
+</head>
+<body>
+
+<!-- 상단 네비 -->
+<div class="nav"><div class="in">
+  <button class="mark" onclick="go('landing')"><span class="logo"></span>ORBIT</button>
+  <nav class="navmenu">
+    <a onclick="scrollSec('about')">서비스 소개</a>
+    <a onclick="scrollSec('how')">이용 방법</a>
+    <a onclick="scrollSec('example')">프로젝트 예시</a>
+    <a onclick="scrollSec('lang')">브랜드 언어</a>
+  </nav>
+  <div class="right" id="navRight"></div>
+</div></div>
+
+<!-- ===== 랜딩 ===== -->
+<section class="screen" id="s-landing">
+  <!-- HERO -->
+  <div class="lwrap" id="sec-about">
+    <div class="hero-slider">
+      <!-- 슬라이드 1: Shooter -->
+      <div class="lhero hslide active">
+        <div>
+          <span class="badge">✦ AI Team Building Platform</span>
+          <h1>아이디어를,<br><span class="bl">ORBIT</span> 하다.</h1>
+          <p class="desc">한 줄의 아이디어를 팀원이 이해할 수 있는 언어로 바꾸고, 함께할 사람에게 ORBIT 초대를 보내 팀 구성까지 이어지게 합니다.</p>
+          <p style="font-size:13.5px; color:var(--blue); font-weight:800; margin:0;">👇 아래에서 시작 방식을 골라보세요</p>
+        </div>
+        <div class="heromock">
+          <div class="hm-top"><i></i><i></i><i></i></div>
+          <div class="hm-body">
+            <div class="hm-label">아이디어</div>
+            <div class="hm-idea">페트병 뚜껑을 모아 핸드폰 그립톡으로 재활용, 판매하는 사업</div>
+            <div class="hm-status"><span class="sp"></span>ORBIT 중… 필요한 팀원과 매칭 기준을 찾고 있어요.</div>
+            <div class="hm-mate"><div class="av"></div><div><div class="mt">생산 시설 지식 보유자</div><div class="md">압출 기계의 재활용 소재 가공 경험이 필요합니다.</div></div><span class="bg req">필수</span></div>
+            <div class="hm-mate"><div class="av"></div><div><div class="mt">SNS 마케팅 전문가</div><div class="md">Gen Z 타겟과 인스타그램 판매 흐름에 익숙한 팀원이 적합합니다.</div></div><span class="bg rec">추천</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- 슬라이드 2: Rider -->
+      <div class="lhero hslide">
+        <div>
+          <span class="badge rider">🛰️ 당신의 자리를 찾는 곳</span>
+          <h1>빛나는 아이디어에,<br><span class="gr">올라타다.</span></h1>
+          <p class="desc">이력서는 필요 없어요. 나를 위해 만들어진 3가지 질문에 답하면, 딱 맞는 자리와 매칭됩니다. 기다리지 말고 — 초대받으세요.</p>
+          <p style="font-size:13.5px; color:#047857; font-weight:800; margin:0;">👇 아래에서 시작 방식을 골라보세요</p>
+        </div>
+        <div class="heromock">
+          <div class="hm-top"><i></i><i></i><i></i></div>
+          <div class="hm-body">
+            <div class="hm-label">🛰️ 도착한 ORBIT 초대</div>
+            <div class="hm-idea">에코그립 — 버려진 뚜껑이 손안의 무드</div>
+            <div class="hm-status" style="background:#047857;"><span class="sp"></span>당신에게 딱 맞는 자리를 찾았어요!</div>
+            <div class="hm-mate"><div class="av" style="background:linear-gradient(135deg,#047857,#10b981)"></div><div><div class="mt">SNS 마케팅 전문가 · 당신의 자리</div><div class="md">Gen Z 트렌드 이해도가 높아 이 팀과 잘 맞아요.</div></div><span class="bg" style="background:#10b981;color:#fff">88%</span></div>
+            <div class="hm-mate" style="border:none; padding-top:2px;"><div style="flex:1"></div><span style="background:#0b1226;color:#fff;font-size:11.5px;font-weight:800;padding:8px 14px;border-radius:9px">합류 검토하기 →</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="hdots">
+        <button class="hdot on" onclick="heroGo(0)" aria-label="Shooter"></button>
+        <button class="hdot" onclick="heroGo(1)" aria-label="Rider"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 역할 선택 (Shooter / Rider) -->
+  <div class="lwrap" style="padding-bottom:10px;">
+    <div class="role-pick">
+      <button class="rolecard shooter" onclick="goIdeaIntro()">
+        <div class="rc-emoji">🚀</div>
+        <div class="rc-title">Shooter</div>
+        <div class="rc-sub">아이디어 쏘아 올리기</div>
+        <div class="rc-hint">내 아이디어로 팀을 모아요</div>
+      </button>
+      <button class="rolecard rider" onclick="goExplore()">
+        <div class="rc-emoji">🛰️</div>
+        <div class="rc-title">Rider</div>
+        <div class="rc-sub">빛나는 아이디어에 올라타기</div>
+        <div class="rc-hint">관심 가는 프로젝트에 합류해요</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- 책임 -->
+  <div class="lsec alt" id="sec-how">
+    <div class="lwrap">
+      <h2 class="lsec-t">ORBIT은 팀 구성까지만 책임집니다</h2>
+      <p class="lsec-s">이후의 사업화, 운영 성공 여부는 팀의 몫입니다.</p>
+      <div class="two2">
+        <div class="bigcard"><div class="ic">✨</div><div class="t">1. 아이디어를 구체화</div><div class="d">막연한 한 줄을 팀원이 이해하고 반응할 수 있는 설명으로 바꿉니다.</div></div>
+        <div class="bigcard"><div class="ic">◎</div><div class="t">2. 잘 맞는 팀원 알아보기</div><div class="d">고정 프로필이 아니라 아이디어별 질문과 답변을 바탕으로 나와 더 잘 맞는 사람을 식별합니다.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 과정 -->
+  <div class="lsec">
+    <div class="lwrap">
+      <h2 class="lsec-t">아이디어가 팀이 되는 과정</h2>
+      <div class="flowbox">
+        <div class="flow">
+          <div class="fstep"><div class="fline"></div><div class="ic">💡</div><div class="ft">1. 아이디어 입력</div></div>
+          <div class="fstep"><div class="fline"></div><div class="ic">📋</div><div class="ft">2. ORBIT 구체화</div></div>
+          <div class="fstep"><div class="fline"></div><div class="ic">◎</div><div class="ft">3. 팀원 식별</div></div>
+          <div class="fstep"><div class="fline"></div><div class="ic">✉️</div><div class="ft">4. ORBIT 초대</div></div>
+          <div class="fstep last"><div class="ic">🚩</div><div class="ft">5. ORBIT 완료</div></div>
+        </div>
+        <div class="flowcap">아이디어 한 줄 → 구체화 → 맞는 팀원 식별 → ORBIT 초대 → 합류 합의</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 프로젝트 예시 -->
+  <div class="lsec" id="sec-example">
+    <div class="lwrap">
+      <h2 class="lsec-t" style="text-align:left; font-size:22px;">프로젝트 예시</h2>
+      <div class="exgrid">
+        <div class="excard">
+          <span class="ex-badge">📄 AI 사업 기획안</span>
+          <div class="et">페트병 뚜껑을 모아<br>핸드폰 그립톡으로<br>재활용, 판매하는 사업</div>
+          <div class="ed">ORBIT이 아이디어를 분석해 필요한 팀원과 중요한 매칭 기준을 도출합니다.</div>
+          <div class="exmini">
+            <div class="emrow"><span class="emk">⛳ 문제</span><span class="emv">버려지는 페트병 뚜껑은 재활용이 어렵다</span></div>
+            <div class="emrow"><span class="emk">💡 해결</span><span class="emv">업사이클링 그립톡으로 가공해 판매</span></div>
+            <div class="emrow"><span class="emk">🎯 타겟</span><span class="emv">가치소비에 적극적인 Gen Z 소비자</span></div>
+          </div>
+        </div>
+        <div class="exright">
+          <div class="exh">필요한 팀원</div>
+          <div class="exli"><span class="d">◎</span>압출 기계 및 생산 시설 관련 지식 보유자</div>
+          <div class="exli"><span class="d">◎</span>카페, 공방 형태의 사업 진행 경력자</div>
+          <div class="exli"><span class="d">◎</span>온라인 판매 사업 관련 지식 보유자</div>
+          <div class="exli"><span class="d">◎</span>인스타 등 SNS를 활용하는 마케팅 전문가</div>
+          <div class="exdiv"></div>
+          <div class="exh">팀원 매칭 시 중요 요소</div>
+          <div class="exli"><span class="ck">✓</span>환경보호와 자원 재활용에 대한 마인드 공유</div>
+          <div class="exli"><span class="ck">✓</span>미적 감각 보유</div>
+          <div class="exli"><span class="ck">✓</span>트렌드 및 타겟인 Gen Z 세대에 대한 이해도가 높음</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORBIT 언어 -->
+  <div class="lsec alt" id="sec-lang">
+    <div class="lwrap">
+      <h2 class="lsec-t">제품 안에서 쓰는 <span style="color:var(--blue)">ORBIT</span> 언어</h2>
+      <p class="lsec-s">브랜드명을 동사처럼 사용해, 서비스 경험을 하나의 언어로 묶습니다.</p>
+      <div class="lang4">
+        <div class="langc"><div class="lk">프로젝트 생성</div><div class="lv"><b>ORBIT</b> 시작</div></div>
+        <div class="langc"><div class="lk">아이디어 분석</div><div class="lv"><b>ORBIT</b> 중…</div></div>
+        <div class="langc"><div class="lk">팀원에게 제안</div><div class="lv"><b>ORBIT</b> 초대</div></div>
+        <div class="langc"><div class="lk">합류 합의</div><div class="lv"><b>ORBIT</b> 완료</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 마무리 CTA + 푸터 -->
+  <div class="lwrap" style="padding:42px 0 0;">
+    <div class="endcta">
+      <h2>오늘의 아이디어를<br><span class="bl">ORBIT</span> 해보세요.</h2>
+      <button class="btn lg" onclick="goIdeaIntro()">아이디어 ORBIT 하기 →</button>
+    </div>
+    <div class="lfoot"><span class="mark" style="cursor:default;"><span class="logo"></span>ORBIT</span><span class="ft-r">© 2026 ORBIT. 아이디어를, ORBIT 하다.</span></div>
+  </div>
+</section>
+
+<!-- ===== 로그인 ===== -->
+<section class="screen hidden" id="s-login">
+  <div class="loginpage">
+    <div class="loginbox fade">
+      <div class="mark"><span class="logo"></span>ORBIT</div>
+      <p class="lb-sub">빛나는 아이디어를 함께 실현할<br>팀원을 찾는 여정</p>
+      <h2>시작하기</h2>
+      <p class="lb-desc">간편하게 로그인하고 아이디어를 ORBIT 하세요</p>
+      <button class="gbtn" onclick="doLogin()">
+        <svg class="gicon" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.4 30.1 0 24 0 14.6 0 6.4 5.4 2.5 13.3l7.8 6.1C12.2 13.3 17.6 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.4c-.5 2.9-2.1 5.3-4.6 7l7.1 5.5c4.1-3.8 6.5-9.4 6.5-16z"/><path fill="#FBBC05" d="M10.3 28.4c-.5-1.5-.8-3.1-.8-4.9s.3-3.4.8-4.9l-7.8-6.1C.9 15.6 0 19.7 0 24s.9 8.4 2.5 11.5l7.8-7.1z"/><path fill="#34A853" d="M24 48c6.1 0 11.3-2 15-5.5l-7.1-5.5c-2 1.4-4.6 2.2-7.9 2.2-6.4 0-11.8-3.8-13.7-9.1l-7.8 7.1C6.4 42.6 14.6 48 24 48z"/></svg>
+        Google로 계속하기
+      </button>
+      <button class="kbtn" onclick="doLogin()"><span style="font-size:16px;">💬</span> 카카오로 계속하기</button>
+      <div class="ldiv">또는</div>
+      <input class="lemail" placeholder="이메일 주소" />
+      <button class="btn dark full" onclick="doLogin()">이메일로 계속하기</button>
+      <p class="demo-note">🔸 데모 버전 — 어떤 버튼이든 누르면 로그인된 것처럼 진행됩니다. (실제 계정 연동은 준비중)</p>
+      <p class="lterms">계속하면 <u>이용약관</u>과 <u>개인정보처리방침</u>에 동의하게 됩니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 마이페이지 ===== -->
+<section class="screen hidden" id="s-my">
+  <div class="narrow pagepad">
+    <div class="myhead">
+      <div class="myhi">👋 <b id="myName">홍길동</b>님, 환영합니다</div>
+      <div class="mymode" id="myModeLabel"></div>
+    </div>
+    <div id="my-idea"></div>
+    <div id="my-team" class="hidden"></div>
+  </div>
+</section>
+
+<!-- ===== 아이디어 던지기 ===== -->
+<section class="screen hidden" id="s-idea">
+  <div class="narrow pagepad">
+    <!-- 1) 입력 -->
+    <div id="idea-input">
+      <div class="card inputcard">
+        <h2>한 줄이면 충분합니다</h2>
+        <p class="sub">떠오른 아이디어를 한 줄로 던지면, ORBIT이 비전과 필요한 팀원까지 만들어 줍니다.</p>
+        <textarea id="idea" placeholder="예) 버려지는 페트병 뚜껑을 모아 핸드폰 그립톡으로 업사이클링하는 사업"></textarea>
+        <div class="attach" onclick="comingSoon()">📎 파일 첨부 <span class="soon">준비중</span></div>
+        <button class="btn full" style="margin-top:13px" id="ideaGo" onclick="ideaStart()">ORBIT 구체화 시작 →</button>
+        <div class="chips">
+          <span class="chip" onclick="setIdea(this)">페트병 뚜껑을 그립톡으로 재활용하는 사업</span>
+          <span class="chip" onclick="setIdea(this)">할머니 손맛 반찬을 정기배송하는 서비스</span>
+          <span class="chip" onclick="setIdea(this)">강아지 산책 메이트를 동네에서 매칭해주는 앱</span>
+        </div>
+      </div>
+    </div>
+    <!-- 2) 보충질문 -->
+    <div id="idea-boost"></div>
+    <!-- 3) 비전 -->
+    <div id="idea-vision"></div>
+  </div>
+</section>
+
+<!-- ===== 둘러보기 (비로그인 가능) ===== -->
+<section class="screen hidden" id="s-explore">
+  <div class="narrow pagepad">
+    <button class="btn ghost" onclick="go('landing')">← 처음으로</button>
+    <h2 style="font-size:21px; color:var(--navy); margin:16px 0 4px; letter-spacing:-.02em;">🟩 아이디어 둘러보기</h2>
+    <p style="color:var(--muted); font-size:13px; margin:0 0 18px;">관심 가는 프로젝트를 고르면 상세를 볼 수 있어요. (상세 보기·합류는 로그인 후 진행됩니다.)</p>
+    <div id="explore-list"></div>
+  </div>
+</section>
+
+<!-- ===== 내 이력서 ===== -->
+<section class="screen hidden" id="s-resume">
+  <div class="narrow pagepad">
+    <button class="btn ghost" onclick="showMy('team')">← 둘러보기로</button>
+    <div id="resume-body" style="margin-top:16px"></div>
+  </div>
+</section>
+
+<!-- ===== 팀원: 상세 ===== -->
+<section class="screen hidden" id="s-detail">
+  <div class="narrow pagepad" id="detail-body"></div>
+</section>
+
+<script>
+const ORBIT = { loggedIn:false, user:null, myTab:"idea", vision:null, founderQuestion:"", boost:null, picks:[],
+  applicant:null, myIdeas:[], applied:[], detailVision:null, detailRole:"", detailRate:0 };
+
+/* 대표 데모 프로젝트 — 홍길동이 낸 아이디어 (로그인 시 미리 등록) */
+const DEMO_PROJECT = {
+  serviceName:"에코그립", tagline:"버려진 뚜껑이 손안의 무드",
+  lead:"매년 수만 톤씩 버려지는 페트병 뚜껑. 우리는 그걸 '쓰레기'가 아니라 '소재'로 봅니다. 압출·가공을 거쳐 갖고 싶은 디자인 그립톡으로 — 버린 게 예뻐지는 경험을 Gen Z에게.",
+  story:[
+    "카페를 운영하면서 매일 수백 개의 페트병 뚜껑을 버렸습니다. 분리배출해도 크기가 작아 대부분 소각된다는 걸 알고 나서, 이걸 그냥 버리는 게 계속 마음에 걸렸어요.",
+    "찾아보니 폐플라스틱을 잘게 갈아 압출 성형하면 단단한 소품을 만들 수 있더라고요. 그중에서도 그립톡을 골랐습니다. 작아서 적은 소재로 만들 수 있고, Gen Z가 매일 들고 다니며 자랑하는 아이템이니까요.",
+    "'친환경'을 내세우는 제품은 많지만 정작 예쁘지 않아서 안 사는 경우가 대부분이에요. 우리는 반대로 갑니다 — 먼저 갖고 싶게, 알고 보니 친환경. 이제 이 아이디어를 함께 만들 동료가 필요합니다.",
+  ],
+  whyNow:[
+    {icon:"🌍",title:"시장이 커지는 중",desc:"ESG·가치소비가 Gen Z 핵심 트렌드. 친환경 굿즈 수요 급성장."},
+    {icon:"🧩",title:"조각이 다 맞음",desc:"아이디어·디자인 방향·타깃은 정해졌고, '만들 손'만 있으면 출발."},
+    {icon:"🚀",title:"초기 멤버 자리",desc:"부품이 아니라 처음부터 함께 만드는 창립 멤버로 합류."},
+  ],
+  productNote:"수거한 페트병 뚜껑을 압출·가공해 디자인 그립톡으로 만들고, 온라인·SNS로 판매하는 업사이클링 굿즈 브랜드",
+  plan:{
+    problem:"버려지는 페트병 뚜껑은 크기가 작아 재활용이 어렵고, Gen Z는 가치소비를 원하지만 마땅한 친환경 굿즈가 적다.",
+    solution:"폐뚜껑을 압출·가공해 디자인 그립톡으로 업사이클링하고, '버린 게 예뻐진다'는 스토리를 SNS로 확산한다.",
+    target:"환경에 관심 많고 인증샷·가치소비에 적극적인 Gen Z 소비자.",
+    revenue:"그립톡 판매 · 기업 ESG 굿즈 B2B 납품 · 한정 콜라보.",
+  },
+  neededTeammates:[
+    {role:"압출 기계 및 생산 시설 관련 지식 보유자",detail:"폐뚜껑을 그립톡으로 만드는 압출·성형 공정을 설계하는 핵심 역할"},
+    {role:"카페, 공방 형태의 사업 진행 경력자",detail:"소규모 제작·운영 경험으로 초기 생산과 거점을 함께 꾸리는 역할"},
+    {role:"온라인 판매 사업 관련 지식 보유자",detail:"스토어 구축과 판매·물류 흐름을 만들어 매출의 길을 여는 역할"},
+    {role:"인스타 등 SNS를 활용하는 마케팅 전문가",detail:"업사이클 스토리를 콘텐츠로 풀어 0에서 팬덤을 만드는 역할"},
+  ],
+  matchFactors:[
+    "환경보호와 자원 재활용에 대한 마인드 공유",
+    "미적 감각 보유",
+    "트렌드 및 타겟인 Gen Z 세대에 대한 이해도가 높음",
+  ],
+  aiQuestions:[
+    "환경·재활용 또는 제조·판매 분야에서 직접 해본 경험이 있다면 알려주세요.",
+    "Gen Z 트렌드나 친환경 굿즈 시장을 얼마나 이해하고 있나요?",
+  ],
+  founderQuestion:"우리 사업에서 '환경'은 양보 못 할 가치예요. 자원 재활용에 대해 어떤 생각을 가지고 계신가요?",
+};
+const DEMO_PROJECT_PROPOSALS = [
+  {name:"김도현", role:"압출 기계 및 생산 시설 관련 지식 보유자", rate:88, line:"PP/HDPE 분쇄·사출 설비를 직접 다뤄봤어요. 시제품을 빠르게 만들 수 있습니다.", status:"pending"},
+  {name:"이서연", role:"인스타 등 SNS를 활용하는 마케팅 전문가", rate:82, line:"친환경 브랜드 SNS로 0에서 팬덤을 만든 경험이 있어요. 미적 감각도 자신 있습니다.", status:"pending"},
+];
+
+/* 둘러보기용 데모 아이디어 3개 (코드에 직접 입력) */
+const DEMO_IDEAS = [
+  { serviceName:"손맛 배송", tagline:"할머니의 손맛을 집 앞으로",
+    lead:"바쁜 1인 가구도 집밥의 온기를 느낄 수 있게. 솜씨 좋은 지역 어르신의 정성스러운 반찬을 정기배송합니다.",
+    story:["저는 자취를 시작하고 가장 그리웠던 게 할머니 반찬이었습니다.","수소문해보니 솜씨 좋은 어르신은 많은데 마땅한 판로가 없더라고요. 그 둘을 잇고 싶었습니다."],
+    whyNow:[{icon:"🍱",title:"집밥 수요 증가",desc:"1인 가구 급증으로 건강한 집밥 정기배송 수요 상승"},{icon:"👵",title:"어르신 일자리",desc:"솜씨는 있지만 판로 없는 지역 어르신과 연결"},{icon:"📦",title:"안정적 구독",desc:"정기배송으로 예측 가능한 매출 구조"}],
+    productNote:"솜씨 좋은 지역 어르신의 반찬을 위생관리·표준화해 주 단위로 정기배송하는 구독 서비스",
+    plan:{problem:"1인 가구는 건강한 집밥이 그립지만 직접 하긴 번거롭다",solution:"지역 어르신의 반찬을 위생관리·표준화해 정기배송",target:"집밥을 원하는 2030 1인 가구",revenue:"월 구독료 + 명절 선물세트"},
+    neededTeammates:[{role:"식품 위생·HACCP을 아는 사람",detail:"가정식을 안전하게 상품화하는 핵심 역할"},{role:"구독 커머스를 운영해본 사람",detail:"정기배송 시스템과 고객 관리"},{role:"지역 어르신 네트워크를 뚫을 수 있는 사람",detail:"공급자 발굴과 신뢰 구축"}],
+    matchFactors:["음식과 사람의 온기를 중시","작게 시작해 검증하는 자세","사회적 가치 지향"],
+    aiQuestions:["식품 제조·위생 관련 경험이 있나요?","구독/이커머스 운영을 해본 적 있나요?"], founderQuestion:"'할머니 손맛'이라는 가치를 사업으로 끝까지 지킬 수 있다고 보시나요?" },
+  { serviceName:"실버탭", tagline:"어르신 곁의 디지털 선생님",
+    lead:"키오스크도 모바일 뱅킹도 어려운 어르신께. 눈높이 1:1 방문 스마트폰 교육을 제공합니다.",
+    story:["부모님이 스마트폰을 어려워하시는 걸 보며 시작했습니다.","디지털 소외는 생각보다 큰 불편이고, 친절한 선생님 한 명이면 해결되는 일이 많았습니다."],
+    whyNow:[{icon:"📱",title:"디지털 전환",desc:"키오스크·모바일 필수 시대, 소외층 급증"},{icon:"🏠",title:"방문 수요",desc:"집에서 편하게 배우려는 시니어 증가"},{icon:"🤝",title:"공공 연계",desc:"지자체 디지털 교육 예산과 연결 가능"}],
+    productNote:"시니어 대상 1:1 방문 스마트폰·키오스크 교육 서비스",
+    plan:{problem:"어르신은 디지털 기기 사용이 어려워 일상에 불편을 겪는다",solution:"눈높이 강사가 방문해 1:1로 반복 교육",target:"스마트폰이 어려운 60대 이상과 그 가족",revenue:"방문 교육비 + 지자체·기관 단체 계약"},
+    neededTeammates:[{role:"어르신 눈높이로 가르칠 수 있는 사람",detail:"교육의 질을 좌우하는 핵심"},{role:"지자체·기관 제휴를 뚫는 사람",detail:"안정적 단체 수요 확보"},{role:"쉬운 교육 콘텐츠를 만드는 사람",detail:"반복 가능한 커리큘럼 설계"}],
+    matchFactors:["인내심과 따뜻함","사회적 가치 중시","오프라인 운영을 즐김"],
+    aiQuestions:["시니어 또는 교육 관련 경험이 있나요?","오프라인 운영·제휴 경험이 있나요?"], founderQuestion:"어르신을 대할 때 가장 중요한 태도는 무엇이라고 생각하세요?" },
+  { serviceName:"왈크메이트", tagline:"우리 동네 강아지 산책 친구",
+    lead:"바빠서 산책을 못 시키는 견주와, 강아지를 좋아하는 이웃을 동네 단위로 안전하게 연결합니다.",
+    story:["야근이 많아 우리 강아지 산책이 늘 미안했습니다.","근처에 강아지를 좋아하는 사람은 많은데, 믿고 맡길 방법이 없다는 게 문제였어요."],
+    whyNow:[{icon:"🐕",title:"반려 인구 증가",desc:"반려 1500만 시대, 산책 대행 수요 상승"},{icon:"📍",title:"동네 기반",desc:"하이퍼로컬 매칭으로 신뢰·접근성 확보"},{icon:"⭐",title:"평판 시스템",desc:"후기·인증으로 안전 신뢰 구축"}],
+    productNote:"동네 기반으로 견주와 산책 메이트를 안전하게 잇는 매칭 플랫폼",
+    plan:{problem:"바쁜 견주는 산책을 못 시키고, 강아지 좋아하는 이웃은 기회가 없다",solution:"동네 단위로 견주와 산책 메이트를 안전하게 매칭",target:"산책이 어려운 견주 + 반려동물 좋아하는 이웃",revenue:"매칭 수수료 + 프리미엄 멤버십"},
+    neededTeammates:[{role:"매칭 플랫폼 앱을 만들 수 있는 사람",detail:"서비스의 핵심 인프라 구축"},{role:"반려동물 안전·신뢰 시스템을 설계할 사람",detail:"평판·보험 등 안전장치"},{role:"동네 단위 마케팅을 할 수 있는 사람",detail:"초기 사용자 확보"}],
+    matchFactors:["반려동물에 대한 진심","안전을 최우선으로","커뮤니티 운영 감각"],
+    aiQuestions:["앱/플랫폼 개발 또는 운영 경험이 있나요?","반려동물 관련 경험이나 관심이 있나요?"], founderQuestion:"낯선 사람에게 반려견을 맡기는 불안을 어떻게 줄일 수 있을까요?" },
+];
+
+/* 로그인 유저(홍길동)의 팀원 이력서 */
+const RESUME = {
+  name:"홍길동",
+  headline:"무엇이든 빠르게 배우고 실행하는 제너럴리스트",
+  skills:["스타트업 운영·기획 2년 경험","SNS 콘텐츠 제작·브랜드 마케팅","작은 팀에서 0→1 실행"],
+  traits:["작게 시작해 빠르게 검증하는 실행력","환경·사회적 가치를 중시","낯선 분야도 적극적으로 학습"],
+};
+
+function esc(s){ return (s ?? "").replace(/[&<>]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;" }[c])); }
+function slug(s){ return ([...(s||"")].filter(c=>/[a-zA-Z0-9]/.test(c)).join("").toLowerCase())||"project"; }
+function setIdea(el){ document.getElementById("idea").value = el.textContent; }
+function comingSoon(){ alert("🔸 준비 중입니다.\n(MVP에서는 핵심 흐름만 작동합니다 — 전체 그림을 보여드리기 위한 화면이에요.)"); }
+function spinner(t){ return `<div class="loading"><div class="spinner"></div><div>${esc(t)}</div></div>`; }
+
+function go(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.add("hidden"));
+  document.getElementById("s-"+id).classList.remove("hidden");
+  window.scrollTo({ top:0, behavior:"smooth" });
+  renderNav();
+}
+function requireLogin(next){ if(ORBIT.loggedIn) go(next); else { ORBIT._after=next; go("login"); } }
+function scrollSec(id){
+  if(document.getElementById("s-landing").classList.contains("hidden")) go("landing");
+  setTimeout(()=>{ const e=document.getElementById("sec-"+id); if(e) e.scrollIntoView({behavior:"smooth", block:"start"}); }, 60);
+}
+function doLogin(){
+  ORBIT.loggedIn = true; ORBIT.user = "홍길동";
+  if(!ORBIT.myIdeas.length){
+    ORBIT.myIdeas.push({ vision:DEMO_PROJECT, proposals:DEMO_PROJECT_PROPOSALS.map(p=>({...p})) });
+  }
+  const p = ORBIT._pending; ORBIT._pending = null;
+  if(p && p.type==="idea"){ goIdeaIntro(); const ti=document.getElementById("idea"); if(ti) ti.value=p.idea; ideaStart(); return; }
+  if(p && p.type==="detail"){ openDetail(p.vision); return; }
+  showMy("idea");
+}
+
+/* 비로그인 진입 — 아이디어 올리기 */
+function goIdeaIntro(){
+  go("idea");
+  document.getElementById("idea-input").classList.remove("hidden");
+  document.getElementById("idea-boost").innerHTML=""; document.getElementById("idea-boost").classList.remove("hidden");
+  document.getElementById("idea-vision").innerHTML="";
+  const ti=document.getElementById("idea"); if(ti && !ORBIT._pending) ti.value="";
+}
+/* 비로그인 진입 — 팀원으로 둘러보기 (목록만 먼저) */
+function goExplore(){
+  go("explore");
+  window._explore = ORBIT.loggedIn ? [...ORBIT.myIdeas.map(it=>it.vision), ...DEMO_IDEAS] : [DEMO_PROJECT, ...DEMO_IDEAS];
+  document.getElementById("explore-list").innerHTML = window._explore.map((v,i)=>`
+    <div class="browsecard" onclick="exploreOpen(${i})">
+      <span class="fitpct">🔥 팀원 모집 중</span>
+      <div class="bt" style="margin-top:9px">${esc(v.serviceName)} — ${esc(v.tagline)}</div>
+      <div class="bd">${esc(v.lead)}</div>
+    </div>`).join("");
+}
+function exploreOpen(i){
+  const v = (window._explore||[])[i]; if(!v) return;
+  if(!ORBIT.loggedIn){ ORBIT._pending={type:"detail", vision:v}; go("login"); return; }
+  openDetail(v);
+}
+function logout(){ ORBIT.loggedIn=false; ORBIT.user=null; ORBIT.myIdeas=[]; ORBIT.applied=[]; go("landing"); }
+function pickMode(m){ showMy(m); }
+
+function renderNav(){
+  const r = document.getElementById("navRight");
+  if(!ORBIT.loggedIn){ r.innerHTML = `<button class="linkbtn" onclick="goExplore()">둘러보기</button><button class="linkbtn" onclick="go('login')">로그인</button><button class="navcta" onclick="goIdeaIntro()">ORBIT 시작</button>`; return; }
+  const team = ORBIT.myTab === 'team';
+  r.innerHTML = `
+    <div class="modesw ${team?'team':''}">
+      <button class="seg ${!team?'on':''}" onclick="showMy('idea')">🚀 Shooter</button>
+      <button class="seg ${team?'on':''}" onclick="showMy('team')">🛰️ Rider</button>
+      <span class="knob"></span>
+    </div>
+    ${team ? '<button class="linkbtn" onclick="showResume()">📄 내 이력서</button>' : ''}
+    <span style="font-size:12.5px; color:var(--muted)">${esc(ORBIT.user||"")}님</span>
+    <button class="linkbtn" onclick="logout()">로그아웃</button>`;
+}
+
+async function api(path, body){
+  const r = await fetch(path, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body) });
+  if(!r.ok){ const e = await r.json().catch(()=>({})); throw new Error(e.error || ("서버 오류 "+r.status)); }
+  return r.json();
+}
+
+/* ===== 아이디어 던지기 ===== */
+async function ideaStart(){
+  const idea = document.getElementById("idea").value.trim();
+  if(!idea){ alert("아이디어를 한 줄 입력해 주세요."); return; }
+  ORBIT.idea = idea;
+  if(!ORBIT.loggedIn){ ORBIT._pending={type:"idea", idea}; go("login"); return; }
+  const btn = document.getElementById("ideaGo"); btn.disabled=true;
+  const box = document.getElementById("idea-boost");
+  box.innerHTML = `<div class="card">${spinner("AI가 비전을 또렷하게 만들 질문을 준비하는 중...")}</div>`;
+  try{
+    const b = await api("/api/boost", { idea });
+    ORBIT.boost = b.questions || [];
+    renderBoost();
+  }catch(err){ box.innerHTML = `<div class="err">⚠️ ${esc(err.message)}</div>`; btn.disabled=false; }
+}
+
+function renderBoost(){
+  const qs = ORBIT.boost.map((q,qi)=>`
+    <div class="boostq">
+      <div class="qt">${qi+1}. ${esc(q.q)}</div>
+      ${(q.options||[]).map((o,oi)=>`<div class="opt" id="opt-${qi}-${oi}" onclick="pickOpt(${qi},${oi})"><span class="rd"></span>${esc(o)}</div>`).join("")}
+    </div>`).join("");
+  document.getElementById("idea-boost").innerHTML = `
+    <div class="card fade">
+      <p class="eyebrow">🤖 AI 보충 질문 — 비전을 또렷하게</p>
+      ${qs}
+      <button class="btn full" id="boostGo" onclick="ideaMakeVision()">이 답으로 비전 만들기 →</button>
+    </div>`;
+  ORBIT._sel = {};
+}
+function pickOpt(qi,oi){
+  ORBIT._sel = ORBIT._sel || {};
+  ORBIT._sel[qi] = oi;
+  ORBIT.boost[qi].options.forEach((_,i)=>document.getElementById(`opt-${qi}-${i}`).classList.toggle("sel", i===oi));
+}
+
+async function ideaMakeVision(){
+  const sel = ORBIT._sel || {};
+  const targetAnswer = (ORBIT.boost[0] && ORBIT.boost[0].options[sel[0] ?? 0]) || "";
+  const strengthAnswer = (ORBIT.boost[1] && ORBIT.boost[1].options[sel[1] ?? 0]) || "";
+  document.getElementById("boostGo").disabled = true;
+  const box = document.getElementById("idea-vision");
+  box.innerHTML = `<div class="card">${spinner("ORBIT이 비전 페이지를 만드는 중... (약 30초)")}</div>`;
+  try{
+    const v = await api("/api/vision", { idea:ORBIT.idea, targetAnswer, strengthAnswer });
+    if(v.needMoreInfo){
+      box.innerHTML = `<div class="card"><p class="eyebrow">아이디어가 조금 짧아요</p><ul class="askfor">${(v.askFor||[]).map(q=>`<li>${esc(q)}</li>`).join("")}</ul></div>`;
+      return;
+    }
+    ORBIT.vision = v; ORBIT.founderQuestion = v.founderQuestion || ""; ORBIT.picks = [];
+    document.getElementById("idea-input").classList.add("hidden");
+    document.getElementById("idea-boost").classList.add("hidden");
+    renderVision(v);
+  }catch(err){ box.innerHTML = `<div class="err">⚠️ ${esc(err.message)}</div>`; }
+}
+
+function renderVision(v){
+  const p = v.plan || {};
+  const story = (v.story||[]).map(t=>`<p>${esc(t)}</p>`).join("");
+  const why = (v.whyNow||[]).map(w=>`<div class="why"><div class="ic">${esc(w.icon||"✨")}</div><div class="t">${esc(w.title)}</div><div class="d">${esc(w.desc)}</div></div>`).join("");
+  const picks = (v.neededTeammates||[]).map((m,i)=>`
+    <div class="pick" id="pick-${i}" onclick="togglePick(${i})"><span class="cbx"></span><div><div class="role">${esc(m.role)}</div><div class="det">${esc(m.detail)}</div></div></div>`).join("");
+  const factors = (v.matchFactors||[]).map(f=>`<div class="factor"><span class="ck">✓</span>${esc(f)}</div>`).join("");
+
+  document.getElementById("idea-vision").innerHTML = `
+    <div class="banner fade">✍️ <b>AI가 만든 비전이에요.</b> 아래 <b>제공자 질문</b>은 직접 고칠 수 있고, <b>함께 찾을 팀원</b>을 1명 이상 선택해야 합니다. <button class="linkbtn" style="color:#8b5cf6;font-weight:800" onclick="comingSoon()">🔄 항목별 수정<span class="soon">준비중</span></button></div>
+    <div class="hero fade">
+      <div class="tags"><span class="hot">진척도 0% · 아이디어 단계</span><span>팀원 모집 중</span></div>
+      <h1>${esc(v.serviceName)} — ${esc(v.tagline)}</h1>
+      <p class="lead">${esc(v.lead)}</p>
+    </div>
+    <div class="card story"><p class="eyebrow">📖 왜 이 사업을 하는가</p>${story}</div>
+    <div class="card"><p class="eyebrow">⏱ 왜 지금, 왜 함께인가</p><div class="why-grid">${why}</div></div>
+    <div class="card">
+      <p class="eyebrow">📄 AI 사업 기획안</p>
+      <p style="font-size:13.5px; color:#334155; margin:0 0 14px; line-height:1.6;">${esc(v.productNote)}</p>
+      <div class="plan">
+        <div class="prow"><div class="pk">⛳ 문제</div><div class="pv">${esc(p.problem)}</div></div>
+        <div class="prow"><div class="pk">💡 해결</div><div class="pv">${esc(p.solution)}</div></div>
+        <div class="prow"><div class="pk">🎯 타겟</div><div class="pv">${esc(p.target)}</div></div>
+        <div class="prow"><div class="pk">💰 수익</div><div class="pv">${esc(p.revenue)}</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <p class="eyebrow">🧩 함께 찾을 팀원 — 1명 이상 선택</p>
+      ${picks}
+      <div style="height:1px; background:var(--line); margin:14px 0;"></div>
+      <p class="eyebrow" style="color:var(--navy)">🤝 팀원 매칭 시 중요 요소 (궁합)</p>
+      ${factors}
+    </div>
+    <div class="card">
+      <p class="eyebrow">❓ 팀원에게 물어볼 내 질문 <span class="qsrc prv">수정 가능</span></p>
+      <p style="font-size:12.5px; color:#475569; margin:0 0 10px;">합류 지원자는 <b>AI 질문 2개 + 아래 내 질문 1개</b>에 답합니다.</p>
+      <div class="qcard"><p class="qtext">${esc((v.aiQuestions||[])[0]||"")}<span class="qsrc ai">AI</span></p></div>
+      <div class="qcard"><p class="qtext">${esc((v.aiQuestions||[])[1]||"")}<span class="qsrc ai">AI</span></p></div>
+      <textarea class="editq" id="founderQ" oninput="ORBIT.founderQuestion=this.value">${esc(v.founderQuestion)}</textarea>
+    </div>
+    <div style="display:flex; gap:9px;">
+      <button class="btn ghost" onclick="location.reload()">↺ 다른 아이디어</button>
+      <button class="btn green" style="flex:1" id="confirmBtn" disabled onclick="confirmVision()">팀원을 1명 이상 선택하세요</button>
+    </div>`;
+}
+
+function vtab(which){
+  document.getElementById("vt-mock").classList.toggle("on", which==="mock");
+  document.getElementById("vt-plan").classList.toggle("on", which==="plan");
+  document.getElementById("vbody-mock").classList.toggle("hidden", which!=="mock");
+  document.getElementById("vbody-plan").classList.toggle("hidden", which!=="plan");
+}
+function togglePick(i){
+  const el = document.getElementById("pick-"+i); el.classList.toggle("on");
+  ORBIT.picks = [...document.querySelectorAll(".pick.on")].map(e=>+e.id.split("-")[1]);
+  const btn = document.getElementById("confirmBtn");
+  btn.disabled = ORBIT.picks.length===0;
+  btn.textContent = ORBIT.picks.length ? `확정하고 팀원 찾기 (${ORBIT.picks.length}자리) →` : "팀원을 1명 이상 선택하세요";
+}
+function confirmVision(){
+  const fq = document.getElementById("founderQ"); if(fq) ORBIT.founderQuestion = fq.value.trim();
+  const v = ORBIT.vision; v.founderQuestion = ORBIT.founderQuestion;
+  ORBIT.myIdeas.unshift({ vision:v, proposals: makeProposals(v) });
+  alert("🚀 아이디어를 쏘아 올렸어요!\nORBIT이 이 아이디어에 맞는 팀원을 찾아드릴게요.");
+  openDetail(v, true);  // 내 비전 상세로 이동 → 추천 팀원 매칭
+}
+
+/* ===== 팀원 되기 ===== */
+function renderBrowse(){
+  const list = document.getElementById("browse-list");
+  if(!ORBIT.vision){
+    list.innerHTML = `<div class="card" style="text-align:center; color:var(--muted)">아직 등록된 아이디어가 없어요.<br>먼저 <b>[🟦 아이디어 던지기]</b>에서 아이디어를 만들어 주세요.</div>`;
+    return;
+  }
+  const v = ORBIT.vision;
+  list.innerHTML = `
+    <div class="browsecard fade" onclick="openDetail()">
+      <span class="fitpct">🔥 나와 잘 맞을 것 같아요</span>
+      <div class="bt" style="margin-top:9px">${esc(v.serviceName)} — ${esc(v.tagline)}</div>
+      <div class="bd">${esc(v.lead)}</div>
+      <button class="btn green" style="pointer-events:none">자세히 보기 →</button>
+    </div>`;
+}
+
+function viewMyIdea(idx){ const it=ORBIT.myIdeas[idx]; if(it) openDetail(it.vision, true); }
+async function openDetail(v, isOwner){
+  if(!v) return; ORBIT.detailVision = v;
+  go("detail");
+  const story = (v.story||[]).map(t=>`<p>${esc(t)}</p>`).join("");
+  const why = (v.whyNow||[]).map(w=>`<div class="why"><div class="ic">${esc(w.icon||"✨")}</div><div class="t">${esc(w.title)}</div><div class="d">${esc(w.desc)}</div></div>`).join("");
+  const seats = (v.neededTeammates||[]).map(m=>`<div class="role"><span class="mk">◎</span><div><b style="color:var(--navy)">${esc(m.role)}</b><div class="rdet">${esc(m.detail)}</div></div></div>`).join("");
+  const back = isOwner
+    ? `<button class="btn ghost" onclick="showMy('idea')">← 내 아이디어로</button>`
+    : `<button class="btn ghost" onclick="showMy('team')">← 둘러보기로</button>`;
+  const tag = isOwner ? "📄 내 비전 페이지" : "🤝 합류 검토";
+  const action = isOwner
+    ? `<div class="card">
+        <p class="eyebrow">🧩 이 아이디어가 찾는 팀원</p>${seats}
+        <div style="height:1px; background:var(--line); margin:15px 0;"></div>
+        <p class="eyebrow">❓ 팀원에게 물어볼 내 질문</p>
+        <div class="qcard pr"><p class="qtext">${esc(v.founderQuestion||"")}</p></div>
+      </div>
+      <div class="card"><p class="eyebrow">🛰️ ORBIT이 찾은 추천 팀원 — 직접 초대해 보세요</p><div id="recoSeat">${spinner("이 아이디어에 맞는 팀원을 찾는 중...")}</div></div>`
+    : `<div class="card">
+        <p class="eyebrow">🧩 이 아이디어가 찾는 팀원</p>${seats}
+        <p style="font-size:12.5px; color:#475569; margin:13px 0 4px;">3가지 질문에 답하면 <b>${esc(ORBIT.user)}님의 이력서</b>를 기준으로 매칭률과 가장 잘 맞는 자리를 알려드려요.</p>
+        <button class="btn full" onclick="joinApply()">3질문 답하고 합류 신청 →</button>
+      </div>
+      <div id="joinResult"></div>`;
+  document.getElementById("detail-body").innerHTML = `
+    ${back}
+    <div class="hero fade" style="margin-top:14px;">
+      <div class="tags"><span class="hot">${tag}</span><span>초기 멤버 모집</span></div>
+      <h1>${esc(v.serviceName)} — ${esc(v.tagline)}</h1>
+      <p class="lead">${esc(v.lead)}</p>
+    </div>
+    <div class="card story"><p class="eyebrow">📖 왜 이 사업을 하는가</p>${story}</div>
+    <div class="card"><p class="eyebrow">⏱ 왜 지금, 왜 함께인가</p><div class="why-grid">${why}</div></div>
+    ${action}`;
+  if(isOwner){
+    try{
+      const m = await api("/api/match", { vision:v });
+      ORBIT._reco = m.matches || [];
+      const seat = document.getElementById("recoSeat");
+      seat.innerHTML = ORBIT._reco.length
+        ? ORBIT._reco.map((p,i)=>recoRow(p,i)).join("") + `<p style="font-size:11.5px; color:var(--muted); margin:10px 0 0;">상대가 수락하면 함께 시작합니다. 받은 제안은 위 ‘내가 낸 아이디어’ 카드에서도 관리돼요.</p>`
+        : `<p style="color:var(--muted)">아직 맞는 팀원을 찾지 못했어요.</p>`;
+    }catch(e){ const s=document.getElementById("recoSeat"); if(s) s.innerHTML = `<div class="err">⚠️ ${esc(e.message)}</div>`; }
+  }
+}
+function recoRow(p,i){
+  const star = p.fitLevel==="높음" ? "⭐⭐⭐" : "⭐⭐";
+  return `<div class="prop">
+    <div class="pav">${esc(p.name[0])}</div>
+    <div style="flex:1"><div class="pn">${esc(p.name)} <span class="pill blue">${star} ${esc(p.fitLevel||"")}</span></div>
+      <div class="pr">${esc(p.fitsRole)}</div><div class="pl">${esc(p.reason)}</div></div>
+    <button class="btn sm" id="inv-${i}" onclick="inviteTeammate(${i})">🛰️ ORBIT 초대</button>
+  </div>`;
+}
+function inviteTeammate(i){
+  const p = (ORBIT._reco||[])[i]; if(!p) return;
+  const b = document.getElementById("inv-"+i);
+  if(b){ b.textContent = "초대함 ✓"; b.disabled = true; }
+  alert(`🛰️ ${p.name}님에게 ORBIT 초대를 보냈어요!\n상대가 수락하면 함께 시작합니다.`);
+}
+
+async function joinApply(){
+  const v = ORBIT.detailVision;
+  const questions = [ (v.aiQuestions||[])[0], (v.aiQuestions||[])[1], v.founderQuestion ].filter(Boolean);
+  const applicant = { name:RESUME.name, headline:RESUME.headline, skills:RESUME.skills.join(", "), traits:RESUME.traits.join(", ") };
+  const box = document.getElementById("joinResult");
+  box.innerHTML = `<div class="card">${spinner(ORBIT.user + " 님(나)의 매칭률을 평가하는 중...")}</div>`;
+  try{
+    const r = await api("/api/evaluate", { vision:v, applicant, questions });
+    renderJoin(r);
+  }catch(err){ box.innerHTML = `<div class="err">⚠️ ${esc(err.message)}</div>`; }
+}
+
+function renderJoin(r){
+  const rate = parseInt(r.matchRate||0, 10); ORBIT.detailRate = rate;
+  const answers = (r.answers||[]).map((a,i)=>{
+    const isPr = i===2;
+    return `<div class="qcard ${isPr?"pr":""}"><p class="qtext">${esc(a.question)}<span class="qsrc ${isPr?"prv":"ai"}">${isPr?"제공자":"AI"}</span></p><div class="ans">💬 ${esc(a.answer)}<div class="cc">↳ ${esc(a.comment)}</div></div></div>`;
+  }).join("");
+  const fits = (r.fitItems||[]).map(f=>{
+    const lv=f.level||""; const color = lv==="보통"?"#d97706":"var(--green)"; const ic = lv==="보통"?"⚠️":(lv==="정확"?"🛠":"🌱");
+    return `<div class="fit"><span class="ic">${ic}</span><div><div class="t">${esc(f.title)}</div><div class="d">${esc(f.desc)}</div></div><span class="pct" style="color:${color}">${esc(lv)}</span></div>`;
+  }).join("");
+  let html = `
+    <div class="card fade"><p class="eyebrow">✅ ${esc(ORBIT.user)} 님(나)이 3질문에 답했어요</p>${answers}</div>
+    <div class="card fade"><p class="eyebrow">🤝 나와 이 팀의 매칭률</p>
+      ${r.bestRole?`<p style="text-align:center; font-size:13px; color:var(--blue); font-weight:700; margin:0 0 12px;">🎯 ${esc(ORBIT.user)}님에게 가장 맞는 자리 — ${esc(r.bestRole)}</p>`:``}
+      <div class="score"><div class="n">${rate}<span style="font-size:20px">%</span></div><div class="l">${esc(r.verdict||"")}</div><div class="bar"><div class="fill" id="barfill"></div></div></div>
+      <div style="margin-top:14px">${fits}</div><div class="verdict">${esc(r.summary||"")}</div></div>`;
+  html += `
+    <div class="card fade"><p class="eyebrow">📨 합류 신청</p>
+      <p style="font-size:13px; color:#475569; margin:0 0 11px;">이 아이디어의 제공자에게 합류를 신청합니다. 제공자가 수락하면 슬랙으로 함께 시작해요.</p>
+      <button class="btn green full" id="applyBtn" onclick="applyToIdea()">이 팀에 합류 신청 보내기 →</button>
+      <div id="appliedNote"></div>
+    </div>`;
+  document.getElementById("joinResult").innerHTML = html;
+  requestAnimationFrame(()=>{ const b=document.getElementById("barfill"); if(b) b.style.width=rate+"%"; });
+}
+
+/* 팀원으로 합류 신청 (둘러보기 상세에서) */
+function applyToIdea(){
+  const v = ORBIT.detailVision;
+  ORBIT.applied = ORBIT.applied.filter(a=>a.title!==v.serviceName);
+  ORBIT.applied.unshift({ title:v.serviceName, role:ORBIT.detailRole||"추천 자리", rate:ORBIT.detailRate||0, status:"pending" });
+  const note = document.getElementById("appliedNote");
+  document.getElementById("applyBtn").disabled = true;
+  note.innerHTML = `
+    <div style="margin-top:13px">
+      <div class="banner" style="background:#fffbeb; border-color:#fde68a;">📨 <b>합류 신청을 보냈어요!</b> 제공자가 확인 중이에요. (발표 데모이므로 아래 버튼으로 수락을 시뮬레이션할 수 있어요)</div>
+      <button class="btn dark full" onclick="demoAcceptApply()">＊ 데모: 제공자가 수락함 →</button>
+      <div id="applyDone"></div>
+    </div>`;
+}
+function demoAcceptApply(){
+  if(ORBIT.applied[0]) ORBIT.applied[0].status = "accepted";
+  document.getElementById("applyDone").innerHTML = slackBlock(ORBIT.detailVision.serviceName);
+}
+function slackBlock(name){
+  return `<div style="margin-top:13px">
+      <div class="banner" style="background:#ecfdf5; border-color:#a7f3d0;">🎉 <b>서로 수락했어요!</b> 이제 팀의 여정이 시작됩니다.</div>
+      <div class="slack"><span class="ico">💬</span><div class="t">${esc(name)} 팀 슬랙 채널</div><a class="a" href="#" onclick="comingSoon();return false">참여하기 →</a></div>
+      <p style="font-size:11.5px; color:var(--muted); margin:11px 0 0;">🛡 여기까지가 ORBIT. 이후 협업과 결정은 팀의 몫이며 ORBIT은 관여하지 않습니다.</p>
+    </div>`;
+}
+
+/* ===== 마이페이지 ===== */
+function showMy(tab){
+  ORBIT.myTab = tab;
+  if(document.getElementById("s-my").classList.contains("hidden")) go("my");
+  document.getElementById("myName").textContent = ORBIT.user || "";
+  document.getElementById("myModeLabel").textContent = (tab==="team") ? "🛰️ Rider · 팀원으로 활동" : "🚀 Shooter · 내가 낸 아이디어";
+  document.getElementById("my-idea").classList.toggle("hidden", tab==="team");
+  document.getElementById("my-team").classList.toggle("hidden", tab!=="team");
+  if(tab==="team") renderMyTeam(); else renderMyIdea();
+  renderNav();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+function newIdea(){
+  document.getElementById("idea-input").classList.remove("hidden");
+  document.getElementById("idea-boost").innerHTML=""; document.getElementById("idea-boost").classList.remove("hidden");
+  document.getElementById("idea-vision").innerHTML=""; document.getElementById("idea").value="";
+  go("idea");
+}
+function makeProposals(v){
+  const roles = v.neededTeammates || [];
+  const base = [
+    {name:"김도현", role:(roles[0]&&roles[0].role)||"핵심 역량 보유자", rate:88, line:"관련 공정을 직접 다뤄본 경험이 있어요. 시제품을 빠르게 만들 수 있습니다."},
+    {name:"박지훈", role:(roles[1]&&roles[1].role)||"마케팅 담당", rate:80, line:"SNS로 0에서 팬덤을 만든 경험이 있어요. 브랜드 스토리를 잘 풀 수 있습니다."},
+  ];
+  return base.map(c=>({...c, status:"pending"}));
+}
+function renderMyIdea(){
+  const box = document.getElementById("my-idea");
+  let html = `<button class="btn full" style="margin-bottom:16px" onclick="newIdea()">＋ 새 아이디어 ORBIT 하기</button>`;
+  if(!ORBIT.myIdeas.length){
+    html += `<div class="card" style="text-align:center; color:var(--muted)">아직 등록한 아이디어가 없어요.<br>위 버튼으로 첫 아이디어를 만들어 보세요.</div>`;
+  } else {
+    ORBIT.myIdeas.forEach((it,idx)=>{
+      const pend = it.proposals.filter(p=>p.status==="pending").length;
+      const acc = it.proposals.filter(p=>p.status==="accepted").length;
+      html += `<div class="card">
+        <div style="display:flex; align-items:center; gap:10px; cursor:pointer;" onclick="viewMyIdea(${idx})">
+          <div style="flex:1"><div style="font-size:16px; font-weight:800; color:var(--navy)">${esc(it.vision.serviceName)}</div>
+            <div style="font-size:12.5px; color:var(--muted); margin-top:2px;">${esc(it.vision.tagline)}</div></div>
+          ${pend?`<span class="pill blue">받은 제안 ${pend}건</span>`:``}${acc?`<span class="pill green">합류 ${acc}명</span>`:``}
+          <span style="color:var(--blue); font-size:13px; font-weight:700; white-space:nowrap;">비전 보기 →</span>
+        </div>
+        <div style="margin-top:14px">${it.proposals.map((p,pi)=>proposalRow(idx,pi,p,it.vision.serviceName)).join("")}</div>
+      </div>`;
+    });
+  }
+  box.innerHTML = html;
+}
+function proposalRow(idx,pi,p,svc){
+  if(p.status==="accepted"){
+    return `<div class="prop accepted"><div class="pav">${esc(p.name[0])}</div>
+      <div style="flex:1"><div class="pn">${esc(p.name)} <span class="pill green">수락됨 ✓</span></div><div class="pr">${esc(p.role)} · 매칭률 ${p.rate}%</div></div>
+      <a class="slackmini" onclick="comingSoon()">💬 슬랙</a></div>`;
+  }
+  return `<div class="prop"><div class="pav">${esc(p.name[0])}</div>
+    <div style="flex:1"><div class="pn">${esc(p.name)} <span class="pill blue">매칭률 ${p.rate}%</span></div><div class="pr">${esc(p.role)}</div><div class="pl">"${esc(p.line)}"</div></div>
+    <div class="pbtns"><button class="btn green sm" onclick="acceptProposal(${idx},${pi})">수락</button><button class="btn ghost sm" onclick="rejectProposal(${idx},${pi})">거절</button></div></div>`;
+}
+function acceptProposal(idx,pi){
+  ORBIT.myIdeas[idx].proposals[pi].status="accepted"; renderMyIdea();
+  const p = ORBIT.myIdeas[idx].proposals[pi];
+  alert(`🎉 ${p.name}님의 합류를 수락했어요!\n서로 수락했으니 슬랙 채널로 함께 이동합니다.`);
+}
+function rejectProposal(idx,pi){ ORBIT.myIdeas[idx].proposals.splice(pi,1); renderMyIdea(); }
+
+/* ===== 팀원으로 활동 (둘러보기) ===== */
+function resumeCard(){
+  return `<div class="card" id="sec-resume">
+    <div class="sec-head"><p class="eyebrow">📄 내 이력서 (팀원 프로필)</p><div class="sec-ctrl"><button onclick="comingSoon()">✎ 수정</button></div></div>
+    <div style="display:flex; gap:13px; align-items:center; margin-bottom:16px;">
+      <div class="pav" style="width:48px;height:48px;font-size:18px;">${esc(RESUME.name[0])}</div>
+      <div><div style="font-size:17px; font-weight:800; color:var(--navy)">${esc(RESUME.name)}</div><div style="font-size:12.5px; color:var(--muted); margin-top:2px;">${esc(RESUME.headline)}</div></div>
+    </div>
+    <div class="exh">할 수 있는 일</div>${RESUME.skills.map(s=>`<div class="exli"><span class="d">◎</span>${esc(s)}</div>`).join("")}
+    <div class="exdiv"></div>
+    <div class="exh">성향·가치</div>${RESUME.traits.map(t=>`<div class="exli"><span class="ck">✓</span>${esc(t)}</div>`).join("")}
+  </div>`;
+}
+function renderMyTeam(){
+  const box = document.getElementById("my-team");
+  const mine = ORBIT.myIdeas.map(it=>it.vision);
+  window._browse = [...mine, ...DEMO_IDEAS];
+  let html = `<h3 class="myh">🔍 아이디어 둘러보기</h3>`;
+  html += window._browse.map((v,i)=>`
+    <div class="browsecard" onclick="openDetailIdx(${i})">
+      <span class="fitpct">🔥 합류 가능</span>
+      <div class="bt" style="margin-top:9px">${esc(v.serviceName)} — ${esc(v.tagline)}</div>
+      <div class="bd">${esc(v.lead)}</div>
+    </div>`).join("");
+  if(ORBIT.applied.length){
+    html += `<h3 class="myh" style="margin-top:26px">📨 내가 신청한 아이디어</h3>`;
+    html += ORBIT.applied.map(a=>`<div class="card" style="padding:14px 18px"><div style="display:flex;align-items:center;gap:10px">
+      <div style="flex:1"><b style="color:var(--navy)">${esc(a.title)}</b><div style="font-size:12px;color:var(--muted);margin-top:2px">${esc(a.role)} · 매칭률 ${a.rate}%</div></div>
+      <span class="pill ${a.status==='accepted'?'green':'amber'}">${a.status==='accepted'?'수락됨 ✓':'수락 대기'}</span></div></div>`).join("");
+  }
+  box.innerHTML = html;
+}
+function openDetailIdx(i){ openDetail((window._browse||[])[i]); }
+function showResume(){ go("resume"); document.getElementById("resume-body").innerHTML = resumeCard(); }
+
+/* 히어로 슬라이더 (Shooter ↔ Rider 자동 전환) */
+let heroI = 0;
+function heroGo(i){
+  heroI = i;
+  document.querySelectorAll(".hslide").forEach((s,j)=>s.classList.toggle("active", j===i));
+  document.querySelectorAll(".hdot").forEach((d,j)=>d.classList.toggle("on", j===i));
+}
+setInterval(()=>{
+  if(!document.getElementById("s-landing").classList.contains("hidden")){
+    heroGo((heroI + 1) % 2);
+  }
+}, 5000);
+
+renderNav();
+</script>
+</body>
+</html>

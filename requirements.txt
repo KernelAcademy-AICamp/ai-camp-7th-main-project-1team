@@ -1,0 +1,4 @@
+anthropic>=0.112
+python-dotenv
+flask
+openpyxl

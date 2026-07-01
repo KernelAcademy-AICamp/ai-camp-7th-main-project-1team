@@ -27,6 +27,10 @@
   .mark{display:inline-flex; align-items:center; gap:9px; font-weight:900; letter-spacing:.16em; color:var(--navy); font-size:16px; cursor:pointer; background:none; border:none;}
   .logo{width:22px; height:22px; border:5px solid var(--navy); border-radius:50%; position:relative;}
   .logo::after{content:""; position:absolute; width:30px; height:3px; background:var(--blue); border-radius:999px; transform:rotate(-15deg); top:8px; left:-8px;}
+  /* 실제 로고 이미지 (투명 배경, 비율 유지로 잘림 없음) */
+  .logo-img{height:26px; width:auto; display:block;}
+  .loginbox .logo-img{height:32px;}
+  .lfoot .logo-img{height:22px;}
   .nav .right{margin-left:auto; display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted);}
   .nav .modesw{position:relative; display:inline-grid; grid-template-columns:1fr 1fr; background:#eef2f7; border-radius:999px; padding:4px;}
   .nav .modesw .seg{position:relative; z-index:2; padding:7px 15px; font-size:12.5px; font-weight:800; color:var(--muted); border:none; background:none; cursor:pointer; transition:color .2s; white-space:nowrap; text-align:center;}
@@ -336,7 +340,7 @@
 
 <!-- 상단 네비 -->
 <div class="nav"><div class="in">
-  <button class="mark" onclick="go('landing')"><span class="logo"></span>ORBIT</button>
+  <button class="mark" onclick="go('landing')"><img src="/static/orbit-logo.png" alt="ORBIT" class="logo-img"></button>
   <nav class="navmenu">
     <a onclick="scrollSec('about')">서비스 소개</a>
     <a onclick="scrollSec('how')">이용 방법</a>
@@ -485,7 +489,7 @@
         <button class="btn" style="margin-left:0; background:#fff; color:var(--navy); font-weight:700; padding:10px 17px; font-size:13.5px" onclick="goExplore()">🛰️ 프로젝트 둘러보기 →</button>
       </div>
     </div>
-    <div class="lfoot"><span class="mark" style="cursor:default;"><span class="logo"></span>ORBIT</span><span class="ft-r">© 2026 ORBIT. 아이디어를, ORBIT 하다.</span></div>
+    <div class="lfoot"><span class="mark" style="cursor:default;"><img src="/static/orbit-logo.png" alt="ORBIT" class="logo-img"></span><span class="ft-r">© 2026 ORBIT. 아이디어를, ORBIT 하다.</span></div>
   </div>
 </section>
 
@@ -493,7 +497,7 @@
 <section class="screen hidden" id="s-login">
   <div class="loginpage">
     <div class="loginbox fade">
-      <div class="mark"><span class="logo"></span>ORBIT</div>
+      <div class="mark"><img src="/static/orbit-logo.png" alt="ORBIT" class="logo-img"></div>
       <p class="lb-sub">빛나는 아이디어를 함께 실현할<br>팀원을 찾는 여정</p>
       <h2>시작하기</h2>
       <p class="lb-desc">간편하게 로그인하고 아이디어를 ORBIT 하세요</p>
